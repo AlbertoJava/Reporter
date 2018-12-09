@@ -20,29 +20,26 @@ import static java.lang.Thread.sleep;
 
 public class Controller {
 
-    private static List<SqlProperties> reportsList = new ArrayList<>();
+
     private static PriorityBlockingQueue<SqlProperties> tasksQueue = new PriorityBlockingQueue<>();
     private static SqlExecutor sqlExecutor;
     private static MyFrame frame;
 
 
     static public void main (String [] args) {
-
         if (!checkLisence(true)){
             new LogginWindow();
             }
             else {
                 init();
         }
-
     }
 public static void init (){
     initWorkingPool(BaseConstants.getInstance().isIsZip());
-    //updateSqlPropertiesFromFile();
     new Thread (() -> createThreads()).start();
 
     frame = new MyFrame("Hello world of SWING!",null);
-    frame.setPreferredSize(new Dimension(100, 500));
+    frame.setPreferredSize(new Dimension(1500, 500));
     while(sqlExecutor==null){
         System.out.println("SQLExecuter is null...");
         try {
@@ -51,15 +48,11 @@ public static void init (){
             e.printStackTrace();
         }
     }
-    sqlExecutor.setPanel(frame.getProccessesPanel());
-    frame.getProccessesPanel().setStatusMap(sqlExecutor.getWorkingPool());
-    //frame = new MyFrame("Hello world of SWING!",null);
-    //frame.setSize(500,400);
+    frame.getProccessesPanel().init(sqlExecutor.getWorkingPool());
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.pack();
     frame.setVisible(true);
-    sqlExecutor.setPanel(frame.getProccessesPanel());
-    frame.setSize(new Dimension (1300, 500));
+
 }
     private static boolean checkLisence(boolean b)  {
         if (b) {
@@ -149,10 +142,11 @@ public static void init (){
             }
         }
     }
+
     public static void  createThreads (){
         if (tasksQueue.size()>0) {
             Printer.printRowToMonitor(String.valueOf(tasksQueue.size()));
-            sqlExecutor=new SqlExecutor(tasksQueue,null);
+            sqlExecutor=new SqlExecutor(tasksQueue);
             sqlExecutor.run();
         }
     }

@@ -82,8 +82,6 @@ public class ProccessesPanel extends JScrollPane {
         jLabel4.setBorder(bottomBorder);
         jPanel.add(jLabel4,gbc);
 
-
-
         //updateJComponentsFromQueue();
         setViewportView(jPanel);
 

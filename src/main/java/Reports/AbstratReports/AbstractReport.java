@@ -84,19 +84,6 @@ public abstract class AbstractReport implements Report,  Runnable {
         while (!prepareCreation()){
 
         }
-
-        /*
-        try {
-            prepareCreation();
-        }
-        catch (Exception e){
-            System.out.println("Ошибка создания отчета AbstractReport");
-        }
-
-        finally {
-            sqlExecutor.addQueue(this);
-        }
-*/
         sqlExecutor.addQueue(this);
     }
 

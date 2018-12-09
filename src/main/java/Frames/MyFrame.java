@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class MyFrame extends JFrame {
     private DetailsPanel detailsPanel;
-    private ProccessesPanel proccessesPanel;
+    private ProccessesPanelTab proccessesPanel;
     private TestPanel testPanel;
     private ResultView resultView = new ResultView();
     //private JTextArea textArea = new JTextArea();
@@ -26,11 +26,12 @@ public class MyFrame extends JFrame {
         //Add swing components to content pane
         Container c = getContentPane();
         c.add(resultView,BorderLayout.CENTER);
-        proccessesPanel=new ProccessesPanel();
+        proccessesPanel=new ProccessesPanelTab();
         c.add(proccessesPanel, BorderLayout.WEST);
+
       }
 
-       public ProccessesPanel getProccessesPanel() {
+       public ProccessesPanelTab getProccessesPanel() {
         return proccessesPanel;
     }
 }

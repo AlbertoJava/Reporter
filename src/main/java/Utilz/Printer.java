@@ -2,6 +2,7 @@ package Utilz;
 
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -19,7 +20,13 @@ public  class Printer {
 
 
     public  static void printRowToMonitor(String text){
-        System.out.println(text);
+        try {
+            String utfString = new String (text.getBytes("windows-1251"));
+            System.out.println(utfString);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
     }
     public synchronized static  void printLineToMonitor(String text){
         System.out.print(text);
@@ -75,9 +82,9 @@ public  class Printer {
 
     public static List<StringBuilder> getResults(String description) {
         List<StringBuilder> temp = new ArrayList<StringBuilder>();
-        if (results==null|| results.get(description)==null||results.get(description)==null) {
-            temp.add(new StringBuilder(""));
-            temp.add(new StringBuilder(""));
+        if (results==null||results.get(description)==null) {
+            temp.add(new StringBuilder());
+            temp.add(new StringBuilder());
         }
         else {
             temp.add(results.get(description).getResult());
