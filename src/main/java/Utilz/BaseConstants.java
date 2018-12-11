@@ -15,6 +15,11 @@ public  class BaseConstants {
     private  String zipFileSQL = "C:\\Java\\SQL.zip";
     private String localExcelReportPath = "C:\\RegularReports\\";
     private String zipPsw = "123";
+
+    public static Map<String, DBConnection> getDbase() {
+        return dbase;
+    }
+
     private static Map<String,DBConnection> dbase = new HashMap<String, DBConnection>();
     private static BaseConstants baseConstants = null;
     private static boolean isZip =false;
@@ -76,7 +81,7 @@ public  class BaseConstants {
 
     public String getLocalExcelReportPath (){return localExcelReportPath;}
 
-    class DBConnection {
+    public class DBConnection {
         private String log;
         private String psw;
         private String connString;

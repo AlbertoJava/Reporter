@@ -228,7 +228,7 @@ public class SqlProperties implements Comparable{
         return c;
     }
 
-    public String toString(Calendar cdate){
+    public static String toString(Calendar cdate){
         if (cdate==null) return null;
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
         return format.format(cdate.getTime());

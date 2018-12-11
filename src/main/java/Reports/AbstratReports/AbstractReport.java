@@ -82,7 +82,6 @@ public abstract class AbstractReport implements Report,  Runnable {
     @Override
     public void run() {
         while (!prepareCreation()){
-
         }
         sqlExecutor.addQueue(this);
     }

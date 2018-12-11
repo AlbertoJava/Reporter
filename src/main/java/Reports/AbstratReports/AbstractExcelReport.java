@@ -28,8 +28,8 @@ public abstract class AbstractExcelReport extends AbstractReport {
     public AbstractExcelReport(SqlProperties props, SqlExecutor sqlExecutor) {
         super(props,sqlExecutor);
         paths.add(reservePath);
-        if (getProperty("path")!=null){
-        paths.add(getProperty("path"));
+        if (getProperty("excel")!=null){
+        paths.add(getProperty("excel"));
         }
         Printer.printRowToMonitor("Конструктор AbstractMonitor: cтартуем поток " + getProperty("description") + ", сервер подключения: " + getProperty("server"));
     }
@@ -38,7 +38,17 @@ public abstract class AbstractExcelReport extends AbstractReport {
     @Override
     public boolean createReport() {
         resultSet=executeSqlClause(getProperty("sql"));
-        return createReport(resultSet);
+        if (createReport(resultSet)){
+            StringBuilder resultSB = new StringBuilder();
+            resultSB.append("Report paths:" + "\r\n");
+            for (String path: paths) {
+                resultSB.append(path.replace("\\\\", "\\") + "\r\n");
+            }
+            Printer.saveResult(getProperty("description"),resultSB);
+            Printer.printLineToMonitor(resultSB.toString());
+            return true;
+        }
+        return false;
     }
 
     protected boolean createFile(HSSFWorkbook workbook){

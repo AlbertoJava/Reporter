@@ -7,6 +7,7 @@ public class ResultView extends JScrollPane {
     private JTextArea textArea = new JTextArea();
 
     public ResultView() {
+        //textArea.setEnabled(false);
         setViewportView(textArea);
         setBorder(BorderFactory.createTitledBorder("This is ScrollPanel"));
         setPreferredSize(new Dimension(300,100));

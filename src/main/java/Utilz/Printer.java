@@ -17,8 +17,6 @@ import java.util.concurrent.ConcurrentMap;
 public  class Printer {
     private static ConcurrentMap<String, ResultTable> results=new ConcurrentHashMap();
 
-
-
     public  static void printRowToMonitor(String text){
         try {
             String utfString = new String (text.getBytes("windows-1251"));
@@ -55,18 +53,19 @@ public  class Printer {
 
         for (ConcurrentMap.Entry<String, ResultTable> pair:
              results.entrySet()) {
-            sb.append("----------");
+            sb.append("\n\r");
+            sb.append("--------------------------------");
             sb.append(pair.getKey());
             sb.append(' ');
             sb.append(pair.getValue().getDateTime());
-            sb.append("----------\r\n");
+            sb.append("-----------------------------------\r\n");
 
             sb.append(pair.getValue().getResult());
 
-            sb.append("----------");
+            sb.append("--------------------------------");
             sb.append(pair.getKey());
-            sb.append("----------\r\n");
-
+            sb.append("-----------------------------------\r\n");
+            sb.append("\n\r");
         }
 
         try {
