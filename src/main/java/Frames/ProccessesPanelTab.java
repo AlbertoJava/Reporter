@@ -16,24 +16,32 @@ import java.util.*;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
+import java.util.stream.Collectors;
 
 import static java.lang.Thread.sleep;
 
 
 public class ProccessesPanelTab extends JScrollPane implements Runnable{
     private static LinkedHashMap<SqlProperties,Boolean> statusMap;
+    private List<SqlProperties> taskList= new ArrayList<>();
     private MyFrame myFrame;
     private ProccessesPanelTab.ProcessTableModel ptm;
     private JTable proccessesTable;
+    private PriorityBlockingQueue<SqlProperties> queue;
 
 
 
-    public void init (Map<SqlProperties, Boolean> statusMap) {
-        if (statusMap==null){
+
+    public void init (PriorityBlockingQueue<SqlProperties>  queue) {
+
+        if (queue==null){
             throw new NullPointerException("ProccessPanel.setStatusMap get null parameter");
         }
-        this.statusMap = (LinkedHashMap<SqlProperties, Boolean>) statusMap;
-        //this.initialMap = statusMap;
+
+        //this.statusMap = (LinkedHashMap<SqlProperties, Boolean>) statusMap;
+
+        this.queue=queue;
+        taskList = queue.stream().collect(Collectors.toList());
         try {
         myFrame = (MyFrame) getParent().getParent().getParent().getParent();}
         catch(Exception e) {
@@ -149,7 +157,8 @@ public class ProccessesPanelTab extends JScrollPane implements Runnable{
 
         @Override
         public int getRowCount() {
-            return statusMap.size();
+            return queue.size();
+            //return statusMap.size();
         }
 
         @Override
@@ -159,26 +168,20 @@ public class ProccessesPanelTab extends JScrollPane implements Runnable{
 
         @Override
         public synchronized Object getValueAt(int rowIndex, int columnIndex) {
-            Iterator<Map.Entry<SqlProperties,Boolean>> itr = statusMap.entrySet().iterator();
-            int i=0;
-            Map.Entry<SqlProperties,Boolean> entry=null;
-            while (itr.hasNext() )            {
-                if (i==rowIndex){
-                    entry = itr.next();
-                    break;
-                }
-                i++;
-                itr.next();
 
-           }
+            //Iterator<SqlProperties> itr = queue.iterator();
+            /*Iterator<Map.Entry<SqlProperties,Boolean>> itr = statusMap.entrySet().iterator();
+
+            Map.Entry<SqlProperties,Boolean> entry=null;*/
+            SqlProperties entry=taskList.get(rowIndex);
+            //int i=0;
 
            String result=null;
            switch (columnIndex){
-               case 0: result=entry.getKey().getProperty("description");break;
-               case 1: result=entry.getValue()?"running":"asleep";break;
-               case 2: result=entry.getKey().getProperty("timeStampLastExecution");break;
-              // case 3: result=ms_totime (Long.valueOf(entry.getKey().getProperty("asleeptime")));break;
-               case 3: result=ms_totime (Long.valueOf(entry.getKey().calcSleepingTime()));break;
+               case 0: result=entry.getProperty("description");break;
+               case 1: result=entry.isRunning()?"running":"asleep";break;
+               case 2: result=entry.getProperty("timeStampLastExecution");break;
+               case 3: result=ms_totime (Long.valueOf(entry.calcSleepingTime()));break;
            }
             return result;
         }

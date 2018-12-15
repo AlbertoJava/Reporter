@@ -42,7 +42,7 @@ public class View1 {
                 GridBagConstraints.NORTH,GridBagConstraints.BOTH,
                 new Insets(1,1,1,1),0,0));
         initWorkingPool(false);
-        ppt.init(statusmap);
+      //  ppt.init(statusmap);
        frame.setVisible(true);
        frame.pack();
 

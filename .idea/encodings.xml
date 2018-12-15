@@ -6,7 +6,7 @@
     <file url="file://$PROJECT_DIR$/src/main/java/Reports/AutoRegistration.java" charset="windows-1251" />
     <file url="file://$PROJECT_DIR$/src/main/java/Reports/IssueSpeed.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/Reports/OktsCat.java" charset="windows-1251" />
-    <file url="file://$PROJECT_DIR$/src/main/java/Reports/OktsOilReport.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/src/main/java/Reports/OktsOilReport.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/Reports/RegularMonitor.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/Reports/Table.java" charset="windows-1251" />
     <file url="file://$PROJECT_DIR$/src/main/java/Utilz/SqlExecutor.java" charset="windows-1251" />

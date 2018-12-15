@@ -42,20 +42,12 @@ public class Controller {
 
     public static void init() {
         initWorkingPool(BaseConstants.getInstance().isIsZip());
-        new Thread(() -> createThreads()).start();
-
+        // Here starts sqlExecuter with tasksQueue
+        new Thread(() -> createSqlExecuter()).start();
         frame = new MyFrame("Hello world of SWING!", null);
         frame.setPreferredSize(new Dimension(1500, 500));
-        while (sqlExecutor == null) {
-            System.out.println("SQLExecuter is null...");
-            try {
-                sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        frame.getProccessesPanel().init(sqlExecutor.getWorkingPool());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.getProccessesPanel().init(sqlExecutor.getWaitingQueue());
         frame.pack();
         frame.setVisible(true);
 
@@ -101,6 +93,7 @@ public class Controller {
         return new GregorianCalendar(yyyy, mm, dd);
     }
 
+    /* Initalizing tasksQueue with objects of SqlProperties. SqlPropeties reads from report files*/
     private static void initWorkingPool(boolean isEncrypted) {
         try {
             if (isEncrypted) {
@@ -150,7 +143,7 @@ public class Controller {
         }
     }
 
-    public static void createThreads() {
+    public static void createSqlExecuter() {
         if (tasksQueue.size() > 0) {
             Printer.printRowToMonitor(String.valueOf(tasksQueue.size()));
             sqlExecutor = new SqlExecutor(tasksQueue);

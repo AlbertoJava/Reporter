@@ -7,17 +7,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import static java.lang.Thread.sleep;
+
 public abstract class AbstractReport implements Report,  Runnable {
     private SqlProperties props;
     private Thread thread;
     private SqlExecutor sqlExecutor;
-    private final static int crashWaitingTime=1;/*minutes*/
+    private final static int crashWaitingTime=60*1000*5;/*minutes*/
 
     public AbstractReport(SqlProperties props, SqlExecutor sqlExecutor)  {
         this.sqlExecutor=sqlExecutor;
         this.props = props;
-        thread = new Thread (this, getProperty("description"));
+        //this.thread.setName(getProperty("description"));
+        /*thread = new Thread (this, getProperty("description"));
         thread.start();
+        */
     }
 
 
@@ -40,15 +44,6 @@ public abstract class AbstractReport implements Report,  Runnable {
         ResultSet resultSet=null;
         try {
             Connection conn = getConnection();
- /*           if (conn ==null){
-                try {
-                    System.out.println("Due to connection error thread "+ props.getProperty("description") + "  asleep for " +crashWaitingTime+" min!");
-                    thread.sleep(crashWaitingTime*60*1000);
-                } catch (InterruptedException e1) {
-                    e1.printStackTrace();
-                }
-                return null;
-            }*/
             Statement stm = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             stm.execute(sqlClause);
             resultSet = stm.getResultSet();
@@ -62,7 +57,7 @@ public abstract class AbstractReport implements Report,  Runnable {
             if (resultSet==null ){
                 System.out.println("Due to connection error thread "+ props.getProperty("description") + "  asleep for " +crashWaitingTime+" min!");
                 try {
-                    thread.sleep(crashWaitingTime*60*1000);
+                    sleep(crashWaitingTime);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                }
@@ -81,8 +76,15 @@ public abstract class AbstractReport implements Report,  Runnable {
 
     @Override
     public void run() {
-        while (!prepareCreation()){
+        while (!createReport()){
+            try {
+                sleep(crashWaitingTime);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
         }
+        getProps().updatePeriodinFile();
         sqlExecutor.addQueue(this);
     }
 

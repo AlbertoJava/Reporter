@@ -24,12 +24,12 @@ public class OktsOilReport extends AbstractExcelReport {
     public boolean createReport(ResultSet result) {
         boolean flag=false;
         List<String> headerXLS = new ArrayList();
-        headerXLS.add("№ п/п");
-        headerXLS.add("Код ТНВЭД");
-        headerXLS.add("ДТ№");
-        headerXLS.add("№ товара");
-        headerXLS.add("ИТС");
-        headerXLS.add("Вес нетто");
+        headerXLS.add("в„– Рї/Рї");
+        headerXLS.add("РљРѕРґ РўРќР’Р­Р”");
+        headerXLS.add("Р”Рўв„–");
+        headerXLS.add("в„– С‚РѕРІР°СЂР°");
+        headerXLS.add("РРўРЎ");
+        headerXLS.add("Р’РµСЃ РЅРµС‚С‚Рѕ");
         HSSFWorkbook workbook =new HSSFWorkbook();
         HSSFSheet worksheet =workbook.createSheet("OilReport");
 
@@ -44,7 +44,7 @@ public class OktsOilReport extends AbstractExcelReport {
         Row row=worksheet.createRow(0);
 
          /*Creating of header*/
-        // Создаем стиль ячейки для заголовка таблицы
+        // РЎРѕР·РґР°РµРј СЃС‚РёР»СЊ СЏС‡РµР№РєРё РґР»СЏ Р·Р°РіРѕР»РѕРІРєР° С‚Р°Р±Р»РёС†С‹
         HSSFCellStyle style = workbook.createCellStyle();
 
         style.setWrapText(true);
@@ -79,7 +79,7 @@ public class OktsOilReport extends AbstractExcelReport {
         Double summ=0.0;
         int numLine=1;
         boolean flag = false;
-        //Записи  и итоговая строчка для 2710198400
+        //Р—Р°РїРёСЃРё  Рё РёС‚РѕРіРѕРІР°СЏ СЃС‚СЂРѕС‡РєР° РґР»СЏ 2710198400
         try {
             while (result.next()) {
                 Row dataRow = worksheet.createRow(rownum);
@@ -109,7 +109,7 @@ public class OktsOilReport extends AbstractExcelReport {
 
             }
 
-            //Считаем сумму для строчки итого если были записи
+            //РЎС‡РёС‚Р°РµРј СЃСѓРјРјСѓ РґР»СЏ СЃС‚СЂРѕС‡РєРё РёС‚РѕРіРѕ РµСЃР»Рё Р±С‹Р»Рё Р·Р°РїРёСЃРё
             if (rownum!=rowNum) {
                 Row conclusionRow = worksheet.createRow(rownum);
                 Cell conclusionCell = conclusionRow.createCell(0, CellType.STRING);
@@ -119,7 +119,7 @@ public class OktsOilReport extends AbstractExcelReport {
                         0,
                         4
                 ));
-                conclusionCell.setCellValue("Итого вес нетто:");
+                conclusionCell.setCellValue("РС‚РѕРіРѕ РІРµСЃ РЅРµС‚С‚Рѕ:");
                 Cell summCell = conclusionRow.createCell(5, CellType.STRING);
                 summCell.setCellValue(summ);
             }

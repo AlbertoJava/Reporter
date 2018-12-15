@@ -15,6 +15,7 @@ public  class BaseConstants {
     private  String zipFileSQL = "C:\\Java\\SQL.zip";
     private String localExcelReportPath = "C:\\RegularReports\\";
     private String zipPsw = "123";
+    public final static int MAX_COUNT_THREADS=5;
 
     public static Map<String, DBConnection> getDbase() {
         return dbase;

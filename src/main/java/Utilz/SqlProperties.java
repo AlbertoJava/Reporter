@@ -15,11 +15,13 @@ import java.util.*;
 
 
 
-public class SqlProperties implements Comparable{
+public class SqlProperties implements Comparable<SqlProperties>{
     private HashMap<String,String> map = new HashMap();
     private String sourceFile =null;
     private Calendar startTime;
     private boolean isZip;
+    private boolean isRunning;
+
     //private Calendar timeToStart=null;
     /*
     *Reading props file with SQL query  from param
@@ -28,6 +30,7 @@ public class SqlProperties implements Comparable{
 
     public SqlProperties(boolean isZip) {
         this.isZip = isZip;
+        this.isRunning=false;
     }
 
     public void setZip(boolean zip) {
@@ -62,8 +65,9 @@ public class SqlProperties implements Comparable{
         map.put("sourceFile", filePath);
         sourceFile=getProperty("sourceFile");
 
-        startTime=GregorianCalendar.getInstance();
-        if (getProperty("period")!=null) {
+
+        if (getProperty("date2")==null /*& getProperty("period")!=null*/) {
+            startTime=GregorianCalendar.getInstance();
             addLong(startTime, Long.valueOf(getProperty("period")));
         }
         else {
@@ -83,45 +87,6 @@ public class SqlProperties implements Comparable{
         return null;
     }
 
-  /*  public HashMap<String, String> loadFromFile(File file)  {
-        StringBuilder stringB = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            while (reader.ready()) {
-                stringB.append (" ");
-                stringB.append(reader.readLine());
-                stringB.append (" ");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String [] params = stringB.toString().split(";");
-        for (int i=0;i<params.length;i++){
-            if (params[i].indexOf("=")==-1) continue;*//*защита от строки без разделителя*//*
-            String [] pair = params[i].split("=",2);
-            map.put(pair[0].trim(),pair[1].trim());
-
-        }
-        if (map.containsKey("sql") & map.containsKey("date1")& map.containsKey("date2")){
-            String parammedSql = map.get("sql").replace("&&date1",map.get("date1"));
-            parammedSql=parammedSql.replace("&&date2",map.get("date2"));
-            map.put("sql",parammedSql);
-        }
-        //updateTimeToStart();
-        map.put("sourceFile", file.getPath());
-        sourceFile=getProperty("sourceFile");
-
-        startTime=GregorianCalendar.getInstance();
-        if (getProperty("period")!=null) {
-            addLong(startTime, Long.valueOf(getProperty("period")));
-        }
-        else {
-            startTime=toCalendar(getProperty("date2"));
-        }
-        return map;
-    }
-   */
-
-
     private Calendar addLong (Calendar calendar, Long milliseconds){
         int millsec = (int) (milliseconds%1000);
         int sec = (int) ((milliseconds/1000)%60);
@@ -135,11 +100,7 @@ public class SqlProperties implements Comparable{
         calendar.add(Calendar.DAY_OF_MONTH,days);
         return calendar;
     }
-    public HashMap<String, String> loadFromFile(String file) {
-        File ffile = new File (file);
-        sourceFile=file;
-        return loadFromFile(ffile);
-    }
+
 
     /*Print map collection*/
     public void printMap(){
@@ -167,15 +128,8 @@ public class SqlProperties implements Comparable{
     }
 
     public long calcSleepingTime (){
-        Calendar currentMoment = new GregorianCalendar();/*текущее время*/
-        long sleepingTime;
-        if (getProperty("date2")==null) {
-            sleepingTime = startTime.getTimeInMillis() -currentMoment.getTimeInMillis();
-        }
-        else {
-            Calendar dateStart=toCalendar(getProperty("date2"));
-            sleepingTime= dateStart.getTimeInMillis()-currentMoment.getTimeInMillis()-360000;
-        }
+        Calendar currentMoment = Calendar.getInstance();/*текущее время*/
+        long sleepingTime = startTime.getTimeInMillis() -currentMoment.getTimeInMillis();;
         return sleepingTime <= 0 ? 0 : sleepingTime;
     }
 
@@ -186,9 +140,11 @@ public class SqlProperties implements Comparable{
             if (getProperty("period")==null){
                 return false;
             }
+            startTime = new GregorianCalendar();
             addLong(startTime, Long.valueOf (getProperty("period")));
             return true;
         }
+
         Calendar date1= toCalendar(getProperty("date1"));
         Calendar date2= toCalendar(getProperty("date2"));
         switch (map.get("reportPeriod")){
@@ -202,9 +158,10 @@ public class SqlProperties implements Comparable{
                 break;
             case "month":
                 date1.add(Calendar.MONTH,1);
-                date1.add(Calendar.MONTH,1);
+                date2.add(Calendar.MONTH,1);
                 break;
         }
+        startTime=date2;
         if (isZip) {
             return updatePropertiesZipFile("date1", toString(date1)) | updatePropertiesZipFile("date2", toString(date2));
         }
@@ -326,10 +283,27 @@ public class SqlProperties implements Comparable{
         return stringB;
     }
 
+    public boolean isRunning() {
+        return isRunning;
+    }
+
+    public void setRunning(boolean running) {
+        isRunning = running;
+    }
+
     @Override
-    public int compareTo(Object o) {
-        if (calcSleepingTime() - ((SqlProperties) o).calcSleepingTime() >0) return 1;
-        if (calcSleepingTime() - ((SqlProperties) o).calcSleepingTime() <=0) return -1;
+    public int compareTo(SqlProperties o) {
+        if (isRunning() & ! o.isRunning() ){
+            return 1;
+        }
+        else if (isRunning() & o.isRunning() ){
+            return 0;
+        }
+        else if (!isRunning & o.isRunning){
+            return -1;
+        }
+        if (calcSleepingTime() - o.calcSleepingTime() >0) return 1;
+        if (calcSleepingTime() - o.calcSleepingTime() <0) return -1;
         return 0;
     }
 }

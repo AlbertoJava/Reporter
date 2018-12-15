@@ -1,8 +1,11 @@
 package Utilz;
 
 
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -20,6 +23,7 @@ public  class Printer {
     public  static void printRowToMonitor(String text){
         try {
             String utfString = new String (text.getBytes("windows-1251"));
+            String utfString1 =new String (utfString.getBytes("windows-1251"),"windows-1251");
             System.out.println(utfString);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -28,6 +32,7 @@ public  class Printer {
     }
     public synchronized static  void printLineToMonitor(String text){
         System.out.print(text);
+        //printRowToMonitor(text);
     }
 
     public synchronized static void saveResult(String description, StringBuilder result){
@@ -67,6 +72,17 @@ public  class Printer {
             sb.append("-----------------------------------\r\n");
             sb.append("\n\r");
         }
+/*
+        try(FileOutputStream fos = new FileOutputStream(BaseConstants.getPath() + "\\" + sCurrentDate + ".txt","UTF-8"){
+            //fout.write("");
+            String secondString = new String(sb.toString().getBytes("windows-1251"),"UTF-8");
+            while (fos.)
+
+            fout.write (secondString);
+        }
+         catch (IOException e) {
+            e.printStackTrace();
+        }*/
 
         try {
             Files.write(path,
