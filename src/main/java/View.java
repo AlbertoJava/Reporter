@@ -9,8 +9,14 @@ public class View extends JDialog {
     private JTabbedPane tabbedPane1;
 
     public View() {
-        setContentPane(contentPane);
-        /*модальность - блоктрует/неблокирует другие окна приложения*/
+
+        JSplitPane jSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true);
+        jSplitPane.setRightComponent(new JButton("Right"));
+        jSplitPane.setLeftComponent(new JButton("Left"));
+        add(jSplitPane);
+/*
+        //setContentPane(contentPane);
+        *//*модальность - блоктрует/неблокирует другие окна приложения*//*
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
 
@@ -40,7 +46,7 @@ public class View extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 onCancel();
             }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);*/
     }
 
     private void onOK() {
@@ -57,7 +63,8 @@ public class View extends JDialog {
         View dialog = new View();
         dialog.pack();
         dialog.setVisible(true);
-        System.exit(0);
+        //System.exit(0);
+        System.out.println("dsfsdf");
     }
 
 }

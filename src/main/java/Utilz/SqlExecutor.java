@@ -15,8 +15,10 @@ import java.util.concurrent.PriorityBlockingQueue;
 
 public class SqlExecutor extends Thread{
     private static PriorityBlockingQueue<SqlProperties> waitingQueue;
+
     ExecutorService service = Executors.newFixedThreadPool(BaseConstants.MAX_COUNT_THREADS);
     //private Map<SqlProperties,Boolean> workingPool=new LinkedHashMap<>();
+
 
     public SqlExecutor(PriorityBlockingQueue<SqlProperties> queue) {
         this.waitingQueue=queue;

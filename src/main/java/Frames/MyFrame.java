@@ -15,9 +15,6 @@ public class MyFrame extends JFrame {
     private ResultView resultView = new ResultView();
     //private JTextArea textArea = new JTextArea();
 
-    public ResultView getTextArea() {
-        return resultView;
-    }
 
     public   MyFrame (String title, Map<SqlProperties,Boolean> statusMap){
         super(title);
@@ -25,13 +22,23 @@ public class MyFrame extends JFrame {
         setLayout(new BorderLayout());
         //Add swing components to content pane
         Container c = getContentPane();
-        c.add(resultView,BorderLayout.CENTER);
         proccessesPanel=new ProccessesPanelTab();
-        c.add(proccessesPanel, BorderLayout.WEST);
+  /*      c.add(resultView,BorderLayout.CENTER);
+        c.add(proccessesPanel, BorderLayout.WEST);*/
+        JSplitPane jSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true);
+        jSplitPane.setRightComponent(resultView);
+        jSplitPane.setLeftComponent(proccessesPanel);
+        c.add(jSplitPane);
+
 
       }
 
        public ProccessesPanelTab getProccessesPanel() {
         return proccessesPanel;
+    }
+
+    public ResultView getTextArea() {
+
+        return resultView;
     }
 }

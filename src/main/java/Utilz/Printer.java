@@ -20,19 +20,11 @@ import java.util.concurrent.ConcurrentMap;
 public  class Printer {
     private static ConcurrentMap<String, ResultTable> results=new ConcurrentHashMap();
 
-    public  static void printRowToMonitor(String text){
-        try {
-            String utfString = new String (text.getBytes("windows-1251"));
-            String utfString1 =new String (utfString.getBytes("windows-1251"),"windows-1251");
-            System.out.println(utfString);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
+    public  synchronized static void printRowToMonitor(String text){
+            System.out.println(text);
     }
     public synchronized static  void printLineToMonitor(String text){
         System.out.print(text);
-        //printRowToMonitor(text);
     }
 
     public synchronized static void saveResult(String description, StringBuilder result){
@@ -41,7 +33,7 @@ public  class Printer {
         saveMaptoFile();
     }
 
-    private synchronized static boolean saveMaptoFile(){
+    private static boolean saveMaptoFile(){
         Calendar c = new GregorianCalendar();
         String sCurrentDate = c.get(Calendar.DATE) + "." + (c.get(Calendar.MONTH) + 1) + "." + c.get(Calendar.YEAR);
 
@@ -58,7 +50,7 @@ public  class Printer {
 
         for (ConcurrentMap.Entry<String, ResultTable> pair:
              results.entrySet()) {
-            sb.append("\n\r");
+            sb.append("\r\n");
             sb.append("--------------------------------");
             sb.append(pair.getKey());
             sb.append(' ');
@@ -69,8 +61,7 @@ public  class Printer {
 
             sb.append("--------------------------------");
             sb.append(pair.getKey());
-            sb.append("-----------------------------------\r\n");
-            sb.append("\n\r");
+            sb.append("-----------------------------------\r\n\r\n\r\n");
         }
 /*
         try(FileOutputStream fos = new FileOutputStream(BaseConstants.getPath() + "\\" + sCurrentDate + ".txt","UTF-8"){
@@ -87,7 +78,7 @@ public  class Printer {
         try {
             Files.write(path,
                         (sb.toString()).getBytes("windows-1251"),
-                         StandardOpenOption.WRITE);
+                         StandardOpenOption.TRUNCATE_EXISTING);
         } catch (IOException e) {
             e.printStackTrace();
             return false;
@@ -120,7 +111,7 @@ public  class Printer {
         private StringBuilder toStringBulder(Calendar c) {
 
             StringBuilder result= new StringBuilder();
-            result.append(align(c.get(Calendar.HOUR)));
+            result.append(align(c.get(Calendar.HOUR_OF_DAY)));
             result.append(':');
             result.append(align(c.get(Calendar.MINUTE)));
             result.append(':');

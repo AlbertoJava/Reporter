@@ -41,7 +41,7 @@ public  class RegularMonitor extends AbstractReport {
         try {
             result.last();
             if (result.getRow() == 0) {
-                Printer.saveResult(getProperty("description"),new StringBuilder("empty selection"));
+                Printer.saveResult(getProperty("description"),new StringBuilder("empty selection\r\n"));
                 return true;
             }
         StringBuilder resultSB = new StringBuilder();

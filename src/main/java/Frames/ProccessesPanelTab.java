@@ -43,7 +43,7 @@ public class ProccessesPanelTab extends JScrollPane implements Runnable{
         this.queue=queue;
         taskList = queue.stream().collect(Collectors.toList());
         try {
-        myFrame = (MyFrame) getParent().getParent().getParent().getParent();}
+        myFrame = (MyFrame) getParent().getParent().getParent().getParent().getParent();}
         catch(Exception e) {
             }
         ptm = new ProcessTableModel();

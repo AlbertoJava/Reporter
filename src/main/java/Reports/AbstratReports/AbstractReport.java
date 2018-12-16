@@ -55,7 +55,7 @@ public abstract class AbstractReport implements Report,  Runnable {
         }
         finally {
             if (resultSet==null ){
-                System.out.println("Due to connection error thread "+ props.getProperty("description") + "  asleep for " +crashWaitingTime+" min!");
+                System.out.println("Due to connection error thread "+ props.getProperty("description") + "  asleep for " +crashWaitingTime/(60*1000)+" min!");
                 try {
                     sleep(crashWaitingTime);
                 } catch (InterruptedException e) {

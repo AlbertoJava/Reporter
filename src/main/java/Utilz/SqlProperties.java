@@ -21,6 +21,7 @@ public class SqlProperties implements Comparable<SqlProperties>{
     private Calendar startTime;
     private boolean isZip;
     private boolean isRunning;
+    private int localPeriod=0;
 
     //private Calendar timeToStart=null;
     /*
@@ -59,6 +60,10 @@ public class SqlProperties implements Comparable<SqlProperties>{
             String parammedSql = map.get("sql").replace("&&date1",map.get("date1"));
             parammedSql=parammedSql.replace("&&date2",map.get("date2"));
             map.put("sql",parammedSql);
+        }
+
+        if (getProperty("period")!=null && localPeriod>0){
+            map.put("period", String.valueOf(localPeriod));
         }
         //updateTimeToStart();
 
