@@ -51,17 +51,19 @@ public  class Printer {
         for (ConcurrentMap.Entry<String, ResultTable> pair:
              results.entrySet()) {
             sb.append("\r\n");
-            sb.append("--------------------------------");
-            sb.append(pair.getKey());
-            sb.append(' ');
-            sb.append(pair.getValue().getDateTime());
-            sb.append("-----------------------------------\r\n");
+            StringBuilder header = new StringBuilder();
+            header.append("--------------------------------");
+            header.append(pair.getKey());
+            header.append(' ');
+            header.append(pair.getValue().getDateTime());
+            header.append("-----------------------------------\r\n");
 
+            sb.append(header);
             sb.append(pair.getValue().getResult());
-
-            sb.append("--------------------------------");
-            sb.append(pair.getKey());
-            sb.append("-----------------------------------\r\n\r\n\r\n");
+            String closingHeader = StringUtilz.alignStringAfter("--------------------------------" +pair.getKey(),
+                                                           header.length()-2,"-");
+            sb.append(closingHeader);
+            sb.append("\r\n\r\n\r\n");
         }
 /*
         try(FileOutputStream fos = new FileOutputStream(BaseConstants.getPath() + "\\" + sCurrentDate + ".txt","UTF-8"){

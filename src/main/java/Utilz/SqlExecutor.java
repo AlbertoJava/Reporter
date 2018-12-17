@@ -6,6 +6,7 @@ import Reports.AbstratReports.Report;
 import Reports.ReportFactory;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -17,6 +18,7 @@ public class SqlExecutor extends Thread{
     private static PriorityBlockingQueue<SqlProperties> waitingQueue;
 
     ExecutorService service = Executors.newFixedThreadPool(BaseConstants.MAX_COUNT_THREADS);
+    HashMap<String,ExecutorService> services = new HashMap<>();
     //private Map<SqlProperties,Boolean> workingPool=new LinkedHashMap<>();
 
 
@@ -38,7 +40,11 @@ public class SqlExecutor extends Thread{
                 //sqlProp.addProperty("asleeptime", String.valueOf(period));
                 if (period == 0 && !sqlProp.isRunning()) {
                     AbstractReport r =(AbstractReport) ReportFactory.create(sqlProp, this);
-                    service.submit(r);
+                    if (services.get(r.getProperty("server"))==null){
+                        services.put(r.getProperty("server"), Executors.newFixedThreadPool(BaseConstants.MAX_COUNT_THREADS));
+                    }
+                    services.get(r.getProperty("server")).submit(r);
+                    //service.submit(r);
                     waitingQueue.remove(sqlProp);
                     sqlProp.setRunning(true);
                     waitingQueue.put(sqlProp);

@@ -3,6 +3,7 @@ package Reports.AbstratReports;
 import Utilz.Printer;
 import Utilz.SqlExecutor;
 import Utilz.SqlProperties;
+import Utilz.StringUtilz;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -83,22 +84,22 @@ public abstract class AbstractExcelReport extends AbstractReport {
         String sDate= String.valueOf(c.get(Calendar.DAY_OF_MONTH));
         String sMonth = String.valueOf ((c.get(Calendar.MONTH)+1));
         String sYear = String.valueOf (c.get(Calendar.YEAR));
-        String currentDate= alignString (sDate,2,"0") +delimiter
-                +alignString (sMonth,2,"0")+delimiter
-                +alignString (sYear,4,"20");
+        String currentDate= StringUtilz.alignString (sDate,2,"0") +delimiter
+                +StringUtilz.alignString (sMonth,2,"0")+delimiter
+                +StringUtilz.alignString (sYear,4,"20");
         return currentDate;
     }
     /*
      * Метод выравнивает длину строки знаками sign до длины строки quantitySigns
      * */
-    protected String alignString (String object, int quantitySigns, String sign){
+   /* protected String alignString (String object, int quantitySigns, String sign){
         if (object.length()>=quantitySigns) return object;
         StringBuilder result = new StringBuilder(object);
         while (result.length()<quantitySigns) {
             result.insert(0,sign);
         }
         return result.toString();
-    }
+    }*/
 
     private String  getUniqFileName(String outputFile) {
         for (int i = 0; ; i++) {

@@ -168,11 +168,10 @@ public class Controller {
         String sDate = null;
         for (Map.Entry<String, BaseConstants.DBConnection> pair :
                 BaseConstants.getDbase().entrySet()) {
-            Connection conn = ConnectorToOracle.getInstance().getConnection(pair.getKey());
-            if (conn==null) continue;
-            Statement stm = null;
             try {
-                stm = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                Connection conn = ConnectorToOracle.getInstance().getConnection(pair.getKey());
+                if (conn==null) continue;
+                Statement stm = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
                 stm.execute(sqlClause);
                 ResultSet resultSet = stm.getResultSet();
                 resultSet.next();

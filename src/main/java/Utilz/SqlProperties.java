@@ -6,7 +6,7 @@ import net.lingala.zip4j.io.ZipOutputStream;
 import net.lingala.zip4j.model.FileHeader;
 import net.lingala.zip4j.model.ZipParameters;;
 import java.io.*;
-import java.nio.charset.StandardCharsets;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -134,7 +134,7 @@ public class SqlProperties implements Comparable<SqlProperties>{
 
     public long calcSleepingTime (){
         Calendar currentMoment = Calendar.getInstance();/*текущее время*/
-        long sleepingTime = startTime.getTimeInMillis() -currentMoment.getTimeInMillis();;
+        long sleepingTime = startTime.getTimeInMillis() -currentMoment.getTimeInMillis();
         return sleepingTime <= 0 ? 0 : sleepingTime;
     }
 

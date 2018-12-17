@@ -25,7 +25,7 @@ public abstract class AbstractReport implements Report,  Runnable {
     }
 
 
-    public Connection getConnection()  {
+    public Connection getConnection() throws SQLException {
         return ConnectorToOracle.getInstance().getConnection(props.getProperty("server"));
     }
 

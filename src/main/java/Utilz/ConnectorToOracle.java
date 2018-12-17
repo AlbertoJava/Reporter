@@ -30,33 +30,31 @@ public class ConnectorToOracle {
     }
     }
 
-    public Connection getConnection (String server) {
+    public Connection getConnection (String server) throws SQLException {
         synchronized (ConnectorToOracle.class){
         Integer num = counterConections.get(server);
-        Connection con;
-        if (num != null && num != 0) {
+
+
+        if (num != null && num != 0 && !conections.get(server).isClosed()) {
             num++;
-        } else {
-            try {
-                DriverManager.registerDriver(new oracle.jdbc.OracleDriver());
-                con = DriverManager.getConnection(
+            counterConections.put(server, num);
+            System.out.println("Count of connections for " + server + " is: " +counterConections.get(server));
+            return conections.get(server);
+        }
+        num=0;
+        counterConections.put(server, num);
+        DriverManager.registerDriver(new oracle.jdbc.OracleDriver());
+        Connection con = DriverManager.getConnection(
                         BaseConstants.getInstance().getConnectionString(server),
                         BaseConstants.getInstance().getLog(server),
                         BaseConstants.getInstance().getPsw(server));
-                Printer.printRowToMonitor("Connected Successfully to Oracle instance " + server);
-                conections.put(server, con);
-                num = 1;
-            } catch (SQLException e) {
-                Printer.printRowToMonitor("Error when connect to Oracle instance " + server);
-                e.printStackTrace();
-            }
-            finally {
-
-            }
-        }
+        Printer.printRowToMonitor("Connected Successfully to Oracle instance " + server);
+        conections.put(server, con);
+        num++;
         counterConections.put(server, num);
+        System.out.println("Count of connections for " + server + " is first: " +counterConections.get(server));
         return conections.get(server);
-    }
+        }
     }
 
     public boolean closeConnection (String server){
