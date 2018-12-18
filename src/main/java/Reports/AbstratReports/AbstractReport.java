@@ -76,6 +76,8 @@ public abstract class AbstractReport implements Report,  Runnable {
 
     @Override
     public void run() {
+
+
         while (!createReport()){
             try {
                 sleep(crashWaitingTime);
@@ -84,7 +86,13 @@ public abstract class AbstractReport implements Report,  Runnable {
             }
 
         }
-        getProps().updatePeriodinFile();
+        while (!getProps().updatePeriodinFile()){
+            try {
+                sleep(crashWaitingTime);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         sqlExecutor.addQueue(this);
     }
 

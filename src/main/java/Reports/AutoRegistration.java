@@ -87,7 +87,7 @@ public class AutoRegistration extends AbstractExcelReport {
                 0,
                 3
         ));
-        cell_header.setCellValue("ќтчетный период: с " + startDate + " по " + finishDate+".");
+        cell_header.setCellValue("ќтчетный период: с " + getProperty("date1") + " по " + getProperty("date2")+".");
         Row row=worksheet.createRow(1);
          /*Creating of header*/
         // —оздаем стиль €чейки дл€ заголовка таблицы

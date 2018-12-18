@@ -39,16 +39,8 @@ public class SqlProperties implements Comparable<SqlProperties>{
     }
 
     public HashMap<String, String> loadFromFile(InputStreamReader isr, String filePath) {
-        StringBuilder stringB = getFileContextFromStream(isr);
-/*        try (BufferedReader reader = new BufferedReader(isr)) {
-            while (reader.ready()) {
-                stringB.append(" ");
-                stringB.append(reader.readLine());
-                stringB.append(" ");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-    }*/
+         StringBuilder stringB = getFileContextFromStream(isr);
+
         String [] params = stringB.toString().split(";");
         for (int i=0;i<params.length;i++){
             if (params[i].indexOf("=")==-1) continue;/*защита от строки без разделителя*/
@@ -76,7 +68,8 @@ public class SqlProperties implements Comparable<SqlProperties>{
             addLong(startTime, Long.valueOf(getProperty("period")));
         }
         else {
-            startTime=toCalendar(getProperty("date2"));
+
+            startTime=toCalendar(getProperty("date2")+ " 23:59:59");
         }
         return map;
     }
@@ -145,7 +138,7 @@ public class SqlProperties implements Comparable<SqlProperties>{
             if (getProperty("period")==null){
                 return false;
             }
-            startTime = new GregorianCalendar();
+            startTime = GregorianCalendar.getInstance();
             addLong(startTime, Long.valueOf (getProperty("period")));
             return true;
         }
@@ -166,27 +159,32 @@ public class SqlProperties implements Comparable<SqlProperties>{
                 date2.add(Calendar.MONTH,1);
                 break;
         }
-        startTime=date2;
+        //startTime=date2;
         if (isZip) {
-            return updatePropertiesZipFile("date1", toString(date1)) | updatePropertiesZipFile("date2", toString(date2));
+            return updatePropertiesZipFile("date2", toString(date2)) | updatePropertiesZipFile("date1", toString(date1));
         }
         else{
-            return updatePropertiesFile("date1", toString(date1)) | updatePropertiesFile("date2", toString(date2));
+            return updatePropertiesFile("date2", toString(date2)) | updatePropertiesFile("date1", toString(date1));
         }
     }
 
     public Calendar toCalendar(String sdate){
-        String [] dateParts = sdate.split("\\.|/");
-        if (dateParts.length!=3) return null;
-        dateParts[0]=alignString(dateParts[0],2,"0");
-        dateParts[1]=alignString(dateParts[1],2,"0");
-        if (dateParts[2].length()==2){
-            dateParts[2]=alignString(dateParts[2],4,"20");
-        }
+        String [] dateParts = sdate.split("\\.|/| |:");
         Calendar c = new GregorianCalendar();
-        c.set(Integer.valueOf(dateParts[2]),Integer.valueOf(dateParts[1])-1,Integer.valueOf(dateParts[0]));
-        //c.getTime();
-
+        if (dateParts.length!=3 & dateParts.length!=6) return null;
+        dateParts[0] = alignString(dateParts[0], 2, "0");
+        dateParts[1] = alignString(dateParts[1], 2, "0");
+        if (dateParts[2].length() == 2) {
+            dateParts[2] = alignString(dateParts[2], 4, "20");
+        }
+        c.set(Integer.valueOf(dateParts[2]), Integer.valueOf(dateParts[1]) - 1, Integer.valueOf(dateParts[0]));
+        if (dateParts.length==6){
+            c.set(Calendar.HOUR_OF_DAY,Integer.valueOf(dateParts[3]));
+            c.set(Calendar.MINUTE,Integer.valueOf(dateParts[4]));
+            c.set(Calendar.SECOND,Integer.valueOf(dateParts[5]));
+        }
+        System.out.println(sdate);
+        System.out.println(c.getTime());
         return c;
     }
 

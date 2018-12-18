@@ -69,8 +69,8 @@ public abstract class AbstractExcelReport extends AbstractReport {
             }
         }
         closeConnection(resultSet);
-        flag= getProps().updatePeriodinFile();
-        return flag;
+        //flag= getProps().updatePeriodinFile();
+        return true;
     }
     /*Добавляет путь для выгрузки*/
     protected void addUnloadPath(String outputFile){
