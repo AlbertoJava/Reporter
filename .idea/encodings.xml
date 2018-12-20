@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="Encoding" native2AsciiForPropertiesFiles="true" defaultCharsetForPropertiesFiles="UTF-8">
-    <file url="file://$PROJECT_DIR$/src/main/java/Reports/AbstratReports/AbstractExcelReport.java" charset="windows-1251" />
-    <file url="file://$PROJECT_DIR$/src/main/java/Reports/AbstratReports/AbstractReport.java" charset="windows-1251" />
-    <file url="file://$PROJECT_DIR$/src/main/java/Reports/AutoRegistration.java" charset="windows-1251" />
+  <component name="Encoding" defaultCharsetForPropertiesFiles="UTF-8">
+    <file url="file://$PROJECT_DIR$/src/main/java/Reports/AbstratReports/AbstractExcelReport.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/Reports/AbstratReports/AbstractReport.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/Reports/AutoRegistration.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/Reports/IssueSpeed.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/java/Reports/OktsCat.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/src/main/java/Reports/OktsCat.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/Reports/OktsOilReport.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/Reports/RegularMonitor.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/java/Reports/Table.java" charset="windows-1251" />
-    <file url="file://$PROJECT_DIR$/src/main/java/Utilz/SqlExecutor.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/src/main/java/Reports/Table.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/Utilz/SqlExecutor.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/Utilz/SqlProperties.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/java/Utilz/Table.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/src/main/java/Utilz/Table.java" charset="UTF-8" />
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>

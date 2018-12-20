@@ -75,7 +75,8 @@ public class SqlProperties implements Comparable<SqlProperties>{
     }
 
     public HashMap<String, String> loadFromFile(File file){
-        try (FileReader fileReader =new FileReader(file)){
+        //try (FileReader fileReader =new FileReader(file,"utf-8")){
+        try (InputStreamReader fileReader =new InputStreamReader(new FileInputStream(file),"utf-8")){
             return loadFromFile(fileReader,file.getPath());
         } catch (FileNotFoundException e) {
             e.printStackTrace();

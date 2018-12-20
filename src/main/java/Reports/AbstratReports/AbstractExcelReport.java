@@ -32,7 +32,7 @@ public abstract class AbstractExcelReport extends AbstractReport {
         if (getProperty("excel")!=null){
         paths.add(getProperty("excel"));
         }
-        Printer.printRowToMonitor("Конструктор AbstractMonitor: cтартуем поток " + getProperty("description") + ", сервер подключения: " + getProperty("server"));
+        Printer.printRowToMonitor("Start thread " + getProperty("description") + ", server: " + getProperty("server") + " (AbstractExcelReport constructor)");
     }
     public abstract boolean createReport(ResultSet result);
 
@@ -72,12 +72,12 @@ public abstract class AbstractExcelReport extends AbstractReport {
         //flag= getProps().updatePeriodinFile();
         return true;
     }
-    /*Добавляет путь для выгрузки*/
+    /*Р”РѕР±Р°РІР»СЏРµС‚ РїСѓС‚СЊ РґР»СЏ РІС‹РіСЂСѓР·РєРё*/
     protected void addUnloadPath(String outputFile){
         paths.add(outputFile);
     }
     /*
-     * Метод возвращают текущую дату в виде строки с разделителем delimiter
+     * РњРµС‚РѕРґ РІРѕР·РІСЂР°С‰Р°СЋС‚ С‚РµРєСѓС‰СѓСЋ РґР°С‚Сѓ РІ РІРёРґРµ СЃС‚СЂРѕРєРё СЃ СЂР°Р·РґРµР»РёС‚РµР»РµРј delimiter
      * */
     protected String getCurrentDate (String delimiter){
         Calendar c= new GregorianCalendar();
@@ -90,7 +90,7 @@ public abstract class AbstractExcelReport extends AbstractReport {
         return currentDate;
     }
     /*
-     * Метод выравнивает длину строки знаками sign до длины строки quantitySigns
+     * РњРµС‚РѕРґ РІС‹СЂР°РІРЅРёРІР°РµС‚ РґР»РёРЅСѓ СЃС‚СЂРѕРєРё Р·РЅР°РєР°РјРё sign РґРѕ РґР»РёРЅС‹ СЃС‚СЂРѕРєРё quantitySigns
      * */
    /* protected String alignString (String object, int quantitySigns, String sign){
         if (object.length()>=quantitySigns) return object;
@@ -103,8 +103,8 @@ public abstract class AbstractExcelReport extends AbstractReport {
 
     private String  getUniqFileName(String outputFile) {
         for (int i = 0; ; i++) {
-            if (!Files.exists(Paths.get(outputFile + "\\" + "ОТОиТК 3_"+getCurrentDate(" ") + "_" + String.valueOf(i) + ".xls"))) {
-                outputFile = outputFile + "\\" + "ОТОиТК 3_"+ getCurrentDate(" ") + "_" + String.valueOf(i) + ".xls";
+            if (!Files.exists(Paths.get(outputFile + "\\" + "РћРўРћРёРўРљ 3_"+getCurrentDate(" ") + "_" + String.valueOf(i) + ".xls"))) {
+                outputFile = outputFile + "\\" + "РћРўРћРёРўРљ 3_"+ getCurrentDate(" ") + "_" + String.valueOf(i) + ".xls";
                 break;
             }
         }
@@ -169,7 +169,7 @@ public abstract class AbstractExcelReport extends AbstractReport {
         createHeader(headerXLS,style,row,column);
     }
     /*
-    * @Param column - номер столбца с которого начнется в ставка
+    * @Param column - РЅРѕРјРµСЂ СЃС‚РѕР»Р±С†Р° СЃ РєРѕС‚РѕСЂРѕРіРѕ РЅР°С‡РЅРµС‚СЃСЏ РІ СЃС‚Р°РІРєР°
     * */
     protected void createHeader (List<String> headerXLS, HSSFCellStyle style,Row row, int column ){
         for (int i=0;i<headerXLS.size();i++){
@@ -182,7 +182,7 @@ public abstract class AbstractExcelReport extends AbstractReport {
 
     protected void createVerticalHeader (List<String> headerXLS, HSSFCellStyle style,HSSFSheet sheet, int rowNum,int colNum ){
         for (int i=0;i<headerXLS.size();i++){
-            /*если Row не создан, то создаем*/
+            /*РµСЃР»Рё Row РЅРµ СЃРѕР·РґР°РЅ, С‚Рѕ СЃРѕР·РґР°РµРј*/
             Row row = (sheet.getRow(i+rowNum)==null)?sheet.createRow(i+rowNum):sheet.getRow(i+rowNum);
             Cell cell = row.createCell(i+colNum, CellType.STRING);
             cell.setCellStyle(style);

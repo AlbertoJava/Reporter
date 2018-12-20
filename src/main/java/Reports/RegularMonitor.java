@@ -22,7 +22,7 @@ public  class RegularMonitor extends AbstractReport {
     public RegularMonitor(SqlProperties props, SqlExecutor sqlExecutor) {
         super(props, sqlExecutor);
         this.description = props.getProperty("description");
-        Printer.printRowToMonitor("Constructor of RegularMonitor: here starting new thread " + description + ", server name: " + getProperty("server"));
+        Printer.printRowToMonitor("Thread starting " + description + ", server: " + getProperty("server") + " (Constructor of RegularMonitor)");
     }
 
     @Override

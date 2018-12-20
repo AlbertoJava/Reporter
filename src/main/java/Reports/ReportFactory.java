@@ -21,7 +21,7 @@ public class ReportFactory {
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
-                System.out.println("Класс не существует");
+                System.out.println("Class not found!!! (report factory)");
                 e.printStackTrace();
             } catch (NoSuchMethodException e) {
                 e.printStackTrace();

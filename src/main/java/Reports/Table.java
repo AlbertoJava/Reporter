@@ -7,7 +7,7 @@ public class Table {
     private String [][] matrix ;
 
 /*
-* Конструктор копирует результаты запроса в двумерный массив
+* РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРѕРїРёСЂСѓРµС‚ СЂРµР·СѓР»СЊС‚Р°С‚С‹ Р·Р°РїСЂРѕСЃР° РІ РґРІСѓРјРµСЂРЅС‹Р№ РјР°СЃСЃРёРІ
 * */
     public Table(ResultSet resultSet) {
         if (resultSet == null) return;

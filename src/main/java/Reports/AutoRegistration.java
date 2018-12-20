@@ -31,49 +31,49 @@ public class AutoRegistration extends AbstractExcelReport {
     public boolean createReport(ResultSet result) {
         boolean flag=false;
         List<String> headerXLS = new ArrayList();
-        headerXLS.add("Код ТО");
-        headerXLS.add("ЭК10 ГОД Регистрация");
-        headerXLS.add("ЭК10 ГОД АвтоРегистрация");
-        headerXLS.add("ЭК10 ГОД Доля, %");
+        headerXLS.add("РљРѕРґ РўРћ");
+        headerXLS.add("Р­Рљ10 Р“РћР” Р РµРіРёСЃС‚СЂР°С†РёСЏ");
+        headerXLS.add("Р­Рљ10 Р“РћР” РђРІС‚РѕР РµРіРёСЃС‚СЂР°С†РёСЏ");
+        headerXLS.add("Р­Рљ10 Р“РћР” Р”РѕР»СЏ, %");
 
-        headerXLS.add("ЭК10 Неделя Регистрация");
-        headerXLS.add("ЭК10 Неделя АвтоРегистрация");
-        headerXLS.add("ЭК10 Неделя Доля, %");
+        headerXLS.add("Р­Рљ10 РќРµРґРµР»СЏ Р РµРіРёСЃС‚СЂР°С†РёСЏ");
+        headerXLS.add("Р­Рљ10 РќРµРґРµР»СЏ РђРІС‚РѕР РµРіРёСЃС‚СЂР°С†РёСЏ");
+        headerXLS.add("Р­Рљ10 РќРµРґРµР»СЏ Р”РѕР»СЏ, %");
 
-        headerXLS.add("ИМ40,78 ГОД Регистрация");
-        headerXLS.add("ИМ40,78 ГОД АвтоРегистрация");
-        headerXLS.add("ИМ40,78 ГОД Доля, %");
+        headerXLS.add("РРњ40,78 Р“РћР” Р РµРіРёСЃС‚СЂР°С†РёСЏ");
+        headerXLS.add("РРњ40,78 Р“РћР” РђРІС‚РѕР РµРіРёСЃС‚СЂР°С†РёСЏ");
+        headerXLS.add("РРњ40,78 Р“РћР” Р”РѕР»СЏ, %");
 
-        headerXLS.add("ИМ40,78 Неделя Регистрация");
-        headerXLS.add("ИМ40,78 Неделя АвтоРегистрация");
-        headerXLS.add("ИМ40,78 Неделя Доля, %");
+        headerXLS.add("РРњ40,78 РќРµРґРµР»СЏ Р РµРіРёСЃС‚СЂР°С†РёСЏ");
+        headerXLS.add("РРњ40,78 РќРµРґРµР»СЏ РђРІС‚РѕР РµРіРёСЃС‚СЂР°С†РёСЏ");
+        headerXLS.add("РРњ40,78 РќРµРґРµР»СЏ Р”РѕР»СЏ, %");
 
-        headerXLS.add("ЭК10 ГОД Выпуск");
-        headerXLS.add("ЭК10 ГОД АвтоВыпуск");
-        headerXLS.add("ЭК10 ГОД Доля автовыпуск, %");
+        headerXLS.add("Р­Рљ10 Р“РћР” Р’С‹РїСѓСЃРє");
+        headerXLS.add("Р­Рљ10 Р“РћР” РђРІС‚РѕР’С‹РїСѓСЃРє");
+        headerXLS.add("Р­Рљ10 Р“РћР” Р”РѕР»СЏ Р°РІС‚РѕРІС‹РїСѓСЃРє, %");
 
-        headerXLS.add("ЭК10 Неделя Выпуск");
-        headerXLS.add("ЭК10 Неделя АвтоВыпуск");
-        headerXLS.add("ЭК10 Неделя Доля автовыпуск, %");
+        headerXLS.add("Р­Рљ10 РќРµРґРµР»СЏ Р’С‹РїСѓСЃРє");
+        headerXLS.add("Р­Рљ10 РќРµРґРµР»СЏ РђРІС‚РѕР’С‹РїСѓСЃРє");
+        headerXLS.add("Р­Рљ10 РќРµРґРµР»СЏ Р”РѕР»СЏ Р°РІС‚РѕРІС‹РїСѓСЃРє, %");
 
-        headerXLS.add("ИМ40 ГОД выпуск");
-        headerXLS.add("ИМ40 ГОД Автовыпуск");
-        headerXLS.add("ИМ40 ГОД Доля автовыпуска, %");
+        headerXLS.add("РРњ40 Р“РћР” РІС‹РїСѓСЃРє");
+        headerXLS.add("РРњ40 Р“РћР” РђРІС‚РѕРІС‹РїСѓСЃРє");
+        headerXLS.add("РРњ40 Р“РћР” Р”РѕР»СЏ Р°РІС‚РѕРІС‹РїСѓСЃРєР°, %");
 
-        headerXLS.add("ИМ40 Неделя выпуск");
-        headerXLS.add("ИМ40 Неделя Автовыпуск");
-        headerXLS.add("ИМ40 Неделя Доля автовыпуск, %");
+        headerXLS.add("РРњ40 РќРµРґРµР»СЏ РІС‹РїСѓСЃРє");
+        headerXLS.add("РРњ40 РќРµРґРµР»СЏ РђРІС‚РѕРІС‹РїСѓСЃРє");
+        headerXLS.add("РРњ40 РќРµРґРµР»СЏ Р”РѕР»СЏ Р°РІС‚РѕРІС‹РїСѓСЃРє, %");
 
-        headerXLS.add("Все таможенные процедуры за год");
-        headerXLS.add("ТУВ за год");
-        headerXLS.add("Доля ТУВ за год, %");
+        headerXLS.add("Р’СЃРµ С‚Р°РјРѕР¶РµРЅРЅС‹Рµ РїСЂРѕС†РµРґСѓСЂС‹ Р·Р° РіРѕРґ");
+        headerXLS.add("РўРЈР’ Р·Р° РіРѕРґ");
+        headerXLS.add("Р”РѕР»СЏ РўРЈР’ Р·Р° РіРѕРґ, %");
 
-        headerXLS.add("Все таможенные процедуры за неделю");
-        headerXLS.add("ТУВ за неделю");
-        headerXLS.add("Доля ТУВ за неделю, %");
+        headerXLS.add("Р’СЃРµ С‚Р°РјРѕР¶РµРЅРЅС‹Рµ РїСЂРѕС†РµРґСѓСЂС‹ Р·Р° РЅРµРґРµР»СЋ");
+        headerXLS.add("РўРЈР’ Р·Р° РЅРµРґРµР»СЋ");
+        headerXLS.add("Р”РѕР»СЏ РўРЈР’ Р·Р° РЅРµРґРµР»СЋ, %");
 
         HSSFWorkbook workbook =new HSSFWorkbook();
-        HSSFSheet worksheet =workbook.createSheet("0006-Р");
+        HSSFSheet worksheet =workbook.createSheet("0006-Р ");
 
         for (int i=0;i<31;i++){
             worksheet.setColumnWidth(i,10*256);
@@ -87,10 +87,10 @@ public class AutoRegistration extends AbstractExcelReport {
                 0,
                 3
         ));
-        cell_header.setCellValue("Отчетный период: с " + getProperty("date1") + " по " + getProperty("date2")+".");
+        cell_header.setCellValue("РћС‚С‡РµС‚РЅС‹Р№ РїРµСЂРёРѕРґ: СЃ " + getProperty("date1") + " РїРѕ " + getProperty("date2")+".");
         Row row=worksheet.createRow(1);
          /*Creating of header*/
-        // Создаем стиль ячейки для заголовка таблицы
+        // РЎРѕР·РґР°РµРј СЃС‚РёР»СЊ СЏС‡РµР№РєРё РґР»СЏ Р·Р°РіРѕР»РѕРІРєР° С‚Р°Р±Р»РёС†С‹
         HSSFCellStyle style = workbook.createCellStyle();
 
         style.setWrapText(true);
