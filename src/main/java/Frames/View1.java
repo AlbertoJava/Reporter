@@ -29,7 +29,11 @@ public class View1 {
     private static int counter;
 
     public static void main(String[] args){
-      JFrame frame= new JFrame ("FRAME");
+
+      JFrame frame0= new StartUpWindow();
+      frame0.setVisible(true);
+
+     /* JFrame frame= new JFrame ("FRAME");
       frame.setSize(new Dimension(600,400));
       frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
       frame.setLocationRelativeTo(null);
@@ -44,7 +48,7 @@ public class View1 {
         initWorkingPool(false);
       //  ppt.init(statusmap);
        frame.setVisible(true);
-       frame.pack();
+       frame.pack();*/
 
 
     }

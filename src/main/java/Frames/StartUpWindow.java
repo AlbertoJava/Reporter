@@ -17,7 +17,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
 public class StartUpWindow extends JFrame {
-    private JLabel textLabel = new JLabel("The period of use of the software has expired. Enter the new key.");
+    private JLabel textLabel = new JLabel("Please wait some minutes...");
     private JLabel logginLabel = new JLabel(" Please, enter here new  key: ");
     private JTextField logginText = new JTextField(60);
     private JButton logginButton   = new JButton("Enter key");
@@ -26,28 +26,12 @@ public class StartUpWindow extends JFrame {
 
 
     public StartUpWindow() throws HeadlessException {
-        super ("License window");
+        super ("Start up window");
         setSize(new Dimension(400,150));
         setLayout(new BorderLayout());
         Container c= getContentPane();
         c.add(textLabel,BorderLayout.NORTH);
-        textLabel.setHorizontalAlignment(0);
-        c.add(logginLabel,BorderLayout.WEST);
-        c.add(logginText,BorderLayout.CENTER);
-        c.add (logginButton,BorderLayout.SOUTH);
-        setVisible(true);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        logginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Button clicked!!!");
-                if (Controller.checkKey(logginText.getText())){
-                    saveKey(logginText.getText());
-                    Controller.init();
-                }
-                dispose();
-            }
-        });
+
 
     }
 

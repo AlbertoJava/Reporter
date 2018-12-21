@@ -30,10 +30,14 @@ public class Controller {
     private static PriorityBlockingQueue<SqlProperties> tasksQueue = new PriorityBlockingQueue<>();
     private static SqlExecutor sqlExecutor;
     private static MyFrame frame;
+    private static StartUpWindow startFrame;
 
 
     static public void main(String[] args) {
-        if (!checkLisence(true)) {
+        startFrame = new StartUpWindow();
+        startFrame.setVisible(true);
+        if (!checkLisence(BaseConstants.isIsZip())) {
+            startFrame.dispose();
             new LogginWindow();
         } else {
             init();
@@ -49,6 +53,7 @@ public class Controller {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getProccessesPanel().init(sqlExecutor.getWaitingQueue());
         frame.pack();
+        startFrame.dispose();
         frame.setVisible(true);
 
     }
