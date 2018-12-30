@@ -34,7 +34,7 @@ public class ProccessesPanelTab extends JScrollPane implements Runnable{
 
     public void init (PriorityBlockingQueue<SqlProperties>  queue) {
 
-        if (queue==null){
+        while (queue==null){
             throw new NullPointerException("ProccessPanel.setStatusMap get null parameter");
         }
 

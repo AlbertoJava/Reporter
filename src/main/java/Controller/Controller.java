@@ -40,12 +40,12 @@ public class Controller {
             startFrame.dispose();
             new LogginWindow();
         } else {
-            init();
+            init(BaseConstants.getInstance().isIsZip());
         }
     }
 
-    public static void init() {
-        initWorkingPool(BaseConstants.getInstance().isIsZip());
+    public static void init(boolean isZip) {
+        initWorkingPool(isZip);
         // Here starts sqlExecuter with tasksQueue
         new Thread(() -> createSqlExecuter()).start();
         frame = new MyFrame("Hello world of SWING!", null);

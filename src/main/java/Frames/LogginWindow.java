@@ -43,7 +43,7 @@ public class LogginWindow extends JFrame {
                 System.out.println("Button clicked!!!");
                 if (Controller.checkKey(logginText.getText())){
                     saveKey(logginText.getText());
-                    Controller.init();
+                    Controller.init(BaseConstants.isIsZip());
                 }
                 dispose();
             }
