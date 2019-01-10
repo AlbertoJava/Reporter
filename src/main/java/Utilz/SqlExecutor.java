@@ -16,6 +16,7 @@ import java.util.concurrent.PriorityBlockingQueue;
 
 public class SqlExecutor extends Thread{
     private static PriorityBlockingQueue<SqlProperties> waitingQueue;
+    private final Object lock = new Object();
 
     ExecutorService service = Executors.newFixedThreadPool(BaseConstants.MAX_COUNT_THREADS);
     HashMap<String,ExecutorService> services = new HashMap<>();
@@ -33,34 +34,47 @@ public class SqlExecutor extends Thread{
 
     @Override
     public void run() {
-        while (true){
-            if (waitingQueue.size()>0) {
-                SqlProperties sqlProp = waitingQueue.peek();
-                long period = sqlProp.calcSleepingTime();
-                //sqlProp.addProperty("asleeptime", String.valueOf(period));
-                if (period == 0 && !sqlProp.isRunning()) {
-                    AbstractReport r =(AbstractReport) ReportFactory.create(sqlProp, this);
-                    if (services.get(r.getProperty("server"))==null){
-                        services.put(r.getProperty("server"), Executors.newFixedThreadPool(BaseConstants.MAX_COUNT_THREADS));
+        while (true) {
+            synchronized (lock) {
+                if (waitingQueue.size() > 0) {
+                    SqlProperties sqlProp = waitingQueue.peek();
+                    long period = sqlProp.calcSleepingTime();
+                    //sqlProp.addProperty("asleeptime", String.valueOf(period));
+                    if (period == 0 && !sqlProp.isRunning()) {
+                        AbstractReport r = (AbstractReport) ReportFactory.create(sqlProp, this);
+                        if (services.get(r.getProperty("server")) == null) {
+                            services.put(r.getProperty("server"), Executors.newFixedThreadPool(BaseConstants.MAX_COUNT_THREADS));
+                        }
+                        services.get(r.getProperty("server")).submit(r);
+                        //service.submit(r);
+                        waitingQueue.remove(sqlProp);
+                        sqlProp.setRunning(true);
+                        waitingQueue.put(sqlProp);
                     }
-                    services.get(r.getProperty("server")).submit(r);
-                    //service.submit(r);
-                    waitingQueue.remove(sqlProp);
-                    sqlProp.setRunning(true);
-                    waitingQueue.put(sqlProp);
+                    else if(period > 0 && !sqlProp.isRunning()){
+                        try {
+                            lock.wait(period);
+                           } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
                 }
+                lock.notifyAll();
             }
         }
     }
 
     public void addQueue(AbstractReport abstractReport){
-        abstractReport.addProperty("timeStampLastExecution", getCurrentDateTime());
-        //abstractReport.addProperty("asleeptime", String.valueOf(abstractReport.getProps().calcSleepingTime()));
-        waitingQueue.remove(abstractReport.getProps());
-        abstractReport.getProps().setRunning(false);
-        waitingQueue.add(abstractReport.getProps());
-        //workingPool.put(abstractReport.getProps(),false);
-
+        synchronized (lock) {
+            abstractReport.addProperty("timeStampLastExecution", getCurrentDateTime());
+            //abstractReport.addProperty("asleeptime", String.valueOf(abstractReport.getProps().calcSleepingTime()));
+            waitingQueue.remove(abstractReport.getProps());
+            abstractReport.getProps().setRunning(false);
+            waitingQueue.add(abstractReport.getProps());
+            //workingPool.put(abstractReport.getProps(),false);
+            lock.notifyAll();
+        }
         long period = abstractReport.getSleepingTime();
         Printer.printRowToMonitor("Thread "+abstractReport.getProperty("description")+" sleep for " +
                         String.valueOf(period / 1000 / 60 / 60 / 24) + " days "

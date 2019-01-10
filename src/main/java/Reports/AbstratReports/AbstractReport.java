@@ -76,8 +76,6 @@ public abstract class AbstractReport implements Report,  Runnable {
 
     @Override
     public void run() {
-
-
         while (!createReport()){
             try {
                 sleep(crashWaitingTime);

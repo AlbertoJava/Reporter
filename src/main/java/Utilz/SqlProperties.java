@@ -34,11 +34,15 @@ public class SqlProperties implements Comparable<SqlProperties>{
         this.isRunning=false;
     }
 
+    public Calendar getStartTime() {
+        return startTime;
+    }
+
     public void setZip(boolean zip) {
         isZip = zip;
     }
 
-    public HashMap<String, String> loadFromFile(InputStreamReader isr, String filePath) {
+    public synchronized HashMap<String, String> loadFromFile(InputStreamReader isr, String filePath) {
          StringBuilder stringB = getFileContextFromStream(isr);
 
         String [] params = stringB.toString().split(";");
@@ -161,6 +165,8 @@ public class SqlProperties implements Comparable<SqlProperties>{
                 break;
         }
         //startTime=date2;
+
+        startTime=toCalendar(toString(date2)+ " 23:59:59");
         if (isZip) {
             return updatePropertiesZipFile("date2", toString(date2)) | updatePropertiesZipFile("date1", toString(date1));
         }
@@ -221,7 +227,7 @@ public class SqlProperties implements Comparable<SqlProperties>{
         return true;
     }
 
-    private boolean updatePropertiesZipFile(String nameProperty, String value)  {
+    private synchronized boolean  updatePropertiesZipFile(String nameProperty, String value)  {
         /*read source in zip file to StringBuilder*/
         String zipFilePath = BaseConstants.getInstance().getZipFileSQL();
         FileHeader fHeader=null;
@@ -252,7 +258,9 @@ public class SqlProperties implements Comparable<SqlProperties>{
         int start = stringB.indexOf(map.get(nameProperty));
         int end = start + map.get(nameProperty).length();
         stringB.replace(start,end,value);
-        /*write StringBuolder to source in zip file */
+        //map.put(nameProperty,value);
+        /*write StringBulder to source in zip file */
+        map.put(nameProperty,value);
         byte [] b=null;
         try (InputStream is = new ByteArrayInputStream(stringB.toString().getBytes("utf-8"))) {
             //b = stringB.toString().getBytes("UTF-8");
@@ -261,7 +269,7 @@ public class SqlProperties implements Comparable<SqlProperties>{
             zp.setFileNameInZip(sourceFile);
             zp.setPassword(BaseConstants.getInstance().getZipPsw());
             zipFile.addStream(is, zp);
-            map.put(nameProperty,value);
+            //map.put(nameProperty,value);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ZipException e) {

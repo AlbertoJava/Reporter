@@ -35,7 +35,7 @@ public class ProccessesPanelTab extends JScrollPane implements Runnable{
     public void init (PriorityBlockingQueue<SqlProperties>  queue) {
 
         while (queue==null){
-            throw new NullPointerException("ProccessPanel.setStatusMap get null parameter");
+            //throw new NullPointerException("ProccessPanel.setStatusMap get null parameter");
         }
 
         //this.statusMap = (LinkedHashMap<SqlProperties, Boolean>) statusMap;
@@ -90,13 +90,13 @@ public class ProccessesPanelTab extends JScrollPane implements Runnable{
 
      private String ms_totime(long ms) {
             Integer [] time = new Integer[4];
-            time[3] = (int)ms/86400000;
+            time[3] = (int)(ms/86400000);
             ms=ms%86400000;
-            time[2] = (int)ms/3600000;
+            time[2] = (int)(ms/3600000);
             ms=ms%3600000;
-            time[1] = (int)ms/60000;
+            time[1] = (int)(ms/60000);
             ms=ms%60000;
-            time[0] = (int)ms/1000;
+            time[0] = (int)(ms/1000);
             ms=ms%1000;
             StringBuilder formatted_time = new StringBuilder();
             for (int i=time.length-1;i>=0;i--){
