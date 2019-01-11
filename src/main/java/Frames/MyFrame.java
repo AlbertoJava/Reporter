@@ -28,7 +28,10 @@ public class MyFrame extends JFrame {
         JSplitPane jSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true);
         jSplitPane.setRightComponent(resultView);
         jSplitPane.setLeftComponent(proccessesPanel);
-        c.add(jSplitPane);
+        BorderLayout bl = new BorderLayout();
+        c.setLayout(bl);
+        c.add(jSplitPane,BorderLayout.CENTER);
+        c.add(new JLabel("Contact e-mail: albtutanota@tutanota.com"),BorderLayout.SOUTH);
 
 
       }

@@ -5,6 +5,11 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class Desipher {
+
+    public static void main(String[] args) {
+        System.out.println(decodeData("e3x1x17"));
+        System.out.println(encodeData("01/03/2019"));
+    }
     public static String decodeData(String s){
         String decodedData = s.substring(s.length()-1,s.length()) +
                 s.substring(0,s.length()-1);

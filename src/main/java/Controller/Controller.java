@@ -34,11 +34,12 @@ public class Controller {
 
 
     static public void main(String[] args) {
+        BaseConstants.getInstance();
         startFrame = new StartUpWindow();
         startFrame.setVisible(true);
         if (!checkLisence(BaseConstants.isIsZip())) {
             startFrame.dispose();
-            new LogginWindow();
+            new LicenseWindow();
         } else {
             init(BaseConstants.getInstance().isIsZip());
         }
@@ -85,6 +86,9 @@ public class Controller {
             }
             return false;
         } else {
+           /*если изфайла*/
+
+
             return true;
         }
     }
@@ -161,6 +165,7 @@ public class Controller {
         if (decodeData == null) return false;
         Calendar c = stringToCalendar(decodeData);
         if (c == null) return false;
+        c.add(Calendar.MONTH,-1);
         if (c.getTimeInMillis() - getCurrentDate().getTimeInMillis() >= 0) {
             return true;
         } else {

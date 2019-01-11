@@ -16,8 +16,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
-public class LogginWindow extends JFrame {
-    private JLabel textLabel = new JLabel("The period of use of the software has expired. Enter the new key.");
+public class LicenseWindow extends JFrame {
+    private JLabel textLabel = new JLabel("<html>The period of use of the software has expired. Enter the new key.<br>Contact e-mail: albtutanota@tutanota.com<html>");
     private JLabel logginLabel = new JLabel(" Please, enter here new  key: ");
     private JTextField logginText = new JTextField(60);
     private JButton logginButton   = new JButton("Enter key");
@@ -25,7 +25,7 @@ public class LogginWindow extends JFrame {
 
 
 
-    public  LogginWindow() throws HeadlessException {
+    public LicenseWindow() throws HeadlessException {
         super ("License window");
         setSize(new Dimension(400,150));
         setLayout(new BorderLayout());
@@ -35,6 +35,7 @@ public class LogginWindow extends JFrame {
         c.add(logginLabel,BorderLayout.WEST);
         c.add(logginText,BorderLayout.CENTER);
         c.add (logginButton,BorderLayout.SOUTH);
+        //c.add(new JLabel("Contact e-mail: albtutanota@tutanota.com"),BorderLayout.SOUTH);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         logginButton.addActionListener(new ActionListener() {
