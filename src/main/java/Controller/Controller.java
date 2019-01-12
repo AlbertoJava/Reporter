@@ -31,6 +31,7 @@ public class Controller {
     private static SqlExecutor sqlExecutor;
     private static MyFrame frame;
     private static StartUpWindow startFrame;
+    private  static StringCrypter stringCrypter = new StringCrypter();
 
 
     static public void main(String[] args) {
@@ -86,11 +87,18 @@ public class Controller {
             }
             return false;
         } else {
-           /*если изфайла*/
+           /*если из файла*/
+           try (BufferedReader bf = new BufferedReader(new FileReader(BaseConstants.getInstance().getPathSQL() + "\\liesence.txt")))
+           {
+             return checkKey(bf.readLine());
+           } catch (FileNotFoundException e) {
+               e.printStackTrace();
+           } catch (IOException e) {
+               e.printStackTrace();
+           }
 
-
-            return true;
         }
+            return false;
     }
 
     private static Calendar stringToCalendar(String s) {
@@ -161,7 +169,7 @@ public class Controller {
     }
 
     public static boolean checkKey(String text) {
-        String decodeData = Desipher.decodeData(text);
+        String decodeData = stringCrypter.decrypt(text);
         if (decodeData == null) return false;
         Calendar c = stringToCalendar(decodeData);
         if (c == null) return false;
