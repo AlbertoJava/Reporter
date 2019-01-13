@@ -30,6 +30,7 @@ public class StartUpWindow extends JFrame {
         setSize(new Dimension(400,150));
         setLayout(new BorderLayout());
         Container c= getContentPane();
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         c.add(textLabel,BorderLayout.NORTH);
 
 
@@ -44,7 +45,7 @@ public class StartUpWindow extends JFrame {
             if (zipFile.isEncrypted()){
                 zipFile.setPassword(BaseConstants.getInstance().getZipPsw());
             }
-            fHeader =zipFile.getFileHeader("liesence.txt");
+            fHeader =zipFile.getFileHeader(BaseConstants.getLiesencePath());
             zipFile.removeFile(fHeader);
 
         } catch (ZipException e) {

@@ -59,7 +59,7 @@ public class LicenseWindow extends JFrame {
                 if (zipFile.isEncrypted()) {
                     zipFile.setPassword(BaseConstants.getInstance().getZipPsw());
                 }
-                fHeader = zipFile.getFileHeader("liesence.txt");
+                fHeader = zipFile.getFileHeader(BaseConstants.getLiesencePath());
                 zipFile.removeFile(fHeader);
 
             } catch (ZipException e) {
@@ -80,7 +80,7 @@ public class LicenseWindow extends JFrame {
             }
         }
         else{
-            try (BufferedWriter bfw = new BufferedWriter(new FileWriter(BaseConstants.getInstance().getPathSQL() + "\\liesence.txt")))
+            try (BufferedWriter bfw = new BufferedWriter(new FileWriter(BaseConstants.getLiesencePath())))
             {
                 bfw.write(text);
             } catch (FileNotFoundException e) {

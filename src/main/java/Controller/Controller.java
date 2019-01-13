@@ -76,6 +76,7 @@ public class Controller {
             }
             for (FileHeader fh : headers) {
                 if (!fh.isDirectory() && fh.getFileName().equals("liesence.txt")) {
+                    BaseConstants.setLiesencePath(fh.getFileName());
                     try (BufferedReader bf = new BufferedReader(new InputStreamReader(zipFile.getInputStream(fh)))) {
                         return checkKey(bf.readLine());
                     } catch (IOException e) {
@@ -88,9 +89,8 @@ public class Controller {
             return false;
         } else {
            /*если из файла*/
-           try (BufferedReader bf = new BufferedReader(new FileReader(BaseConstants.getInstance().getPathSQL() + "\\liesence.txt")))
-           {
-             return checkKey(bf.readLine());
+           try (BufferedReader bf = new BufferedReader(new FileReader(BaseConstants.getLiesencePath())))
+           {return checkKey(bf.readLine());
            } catch (FileNotFoundException e) {
                e.printStackTrace();
            } catch (IOException e) {
