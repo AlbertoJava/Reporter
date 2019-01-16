@@ -2,7 +2,6 @@ package Utilz;
 
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
-import net.lingala.zip4j.io.ZipOutputStream;
 import net.lingala.zip4j.model.FileHeader;
 import net.lingala.zip4j.model.ZipParameters;;
 import java.io.*;
@@ -10,9 +9,9 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static Utilz.Printer.printRowToMonitor;
 
 
 public class SqlProperties implements Comparable<SqlProperties>{
@@ -83,9 +82,9 @@ public class SqlProperties implements Comparable<SqlProperties>{
         try (InputStreamReader fileReader =new InputStreamReader(new FileInputStream(file),"utf-8")){
             return loadFromFile(fileReader,file.getPath());
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            e.printStackTrace(); Printer.saveLogFile(e); ;
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(); Printer.saveLogFile(e); ;
         }
         return null;
     }
@@ -108,12 +107,12 @@ public class SqlProperties implements Comparable<SqlProperties>{
     /*Print map collection*/
     public void printMap(){
         if (map == null || map.size()==0) {
-            System.out.println("Empty PropMap");
+            printRowToMonitor("Empty PropMap");
             return;
         }
         for (Map.Entry<String, String> pair:
              map.entrySet()) {
-            System.out.println("Key: " + pair.getKey() + "; Value " + pair.getValue() );
+            printRowToMonitor("Key: " + pair.getKey() + "; Value " + pair.getValue() );
         }
     }
 
@@ -127,7 +126,7 @@ public class SqlProperties implements Comparable<SqlProperties>{
 
     private void printCalendar(Calendar cdate) {
         String sdate=cdate.get(Calendar.DAY_OF_MONTH)+"."+cdate.get(Calendar.MONTH)+"."+cdate.get(Calendar.YEAR);
-        System.out.println(sdate);
+        printRowToMonitor(sdate);
     }
 
     public long calcSleepingTime (){
@@ -166,12 +165,12 @@ public class SqlProperties implements Comparable<SqlProperties>{
         }
         //startTime=date2;
 
-        startTime=toCalendar(toString(date2)+ " 23:59:59");
+        startTime=toCalendar(StringUtilz.toString(date2)+ " 23:59:59");
         if (isZip) {
-            return updatePropertiesZipFile("date2", toString(date2)) | updatePropertiesZipFile("date1", toString(date1));
+            return updatePropertiesZipFile("date2", StringUtilz.toString(date2)) | updatePropertiesZipFile("date1", StringUtilz.toString(date1));
         }
         else{
-            return updatePropertiesFile("date2", toString(date2)) | updatePropertiesFile("date1", toString(date1));
+            return updatePropertiesFile("date2", StringUtilz.toString(date2)) | updatePropertiesFile("date1", StringUtilz.toString(date1));
         }
     }
 
@@ -190,16 +189,11 @@ public class SqlProperties implements Comparable<SqlProperties>{
             c.set(Calendar.MINUTE,Integer.valueOf(dateParts[4]));
             c.set(Calendar.SECOND,Integer.valueOf(dateParts[5]));
         }
-        System.out.println(sdate);
-        System.out.println(c.getTime());
+        printRowToMonitor(sdate);
+        //printRowToMonitor(c.getTime());
         return c;
     }
 
-    public static String toString(Calendar cdate){
-        if (cdate==null) return null;
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-        return format.format(cdate.getTime());
-    }
     /*
      * Метод выравнивает длину строки знаками sign до длины строки quantitySigns
      * */
@@ -214,7 +208,7 @@ public class SqlProperties implements Comparable<SqlProperties>{
 
     private boolean updatePropertiesFile(String nameProperty, String value){
         //найти в файле свойство и переписать его значение и перезагрузить
-        System.out.println("FileName sourceFile " + sourceFile);
+        printRowToMonitor("FileName sourceFile " + sourceFile);
         Path path = Paths.get(sourceFile);
         try {
             String contentOfFile = new String(Files.readAllBytes(path));
@@ -222,7 +216,7 @@ public class SqlProperties implements Comparable<SqlProperties>{
             Files.write(path,contentOfFile.getBytes());
             map=loadFromFile(path.toFile());
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(); Printer.saveLogFile(e); ;
         }
         return true;
     }
@@ -239,7 +233,7 @@ public class SqlProperties implements Comparable<SqlProperties>{
                     }
                 fHeader =zipFile.getFileHeader(sourceFile);
                 } catch (ZipException e) {
-                    e.printStackTrace();
+                    e.printStackTrace(); Printer.saveLogFile(e); ;
                 }
         StringBuilder stringB=null;
          try (InputStreamReader isr =new InputStreamReader(
@@ -250,9 +244,9 @@ public class SqlProperties implements Comparable<SqlProperties>{
               stringB = getFileContextFromStream(isr);
               zipFile.removeFile(fHeader);
          } catch (IOException e) {
-             e.printStackTrace();
+             e.printStackTrace(); Printer.saveLogFile(e); ;
          } catch (ZipException e) {
-             e.printStackTrace();
+             e.printStackTrace(); Printer.saveLogFile(e); ;
          }
         /*replace value in StringBuilder*/
         int start = stringB.indexOf(map.get(nameProperty));
@@ -271,9 +265,9 @@ public class SqlProperties implements Comparable<SqlProperties>{
             zipFile.addStream(is, zp);
             //map.put(nameProperty,value);
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(); Printer.saveLogFile(e); ;
         } catch (ZipException e) {
-            e.printStackTrace();
+            e.printStackTrace(); Printer.saveLogFile(e); ;
         }
         return true;
     }
@@ -290,7 +284,7 @@ public class SqlProperties implements Comparable<SqlProperties>{
                 //stringB.append(" ");
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(); Printer.saveLogFile(e); ;
         }
         return stringB;
     }

@@ -63,7 +63,8 @@ public abstract class AbstractExcelReport extends AbstractReport {
                 Printer.printRowToMonitor("File created " + s);
 
             } catch (IOException e) {
-                e.printStackTrace();
+                e.printStackTrace(); Printer.saveLogFile(e);
+                ;
                 Printer.printRowToMonitor("Error when writing " + s+  " file!");
 
             }
@@ -141,7 +142,8 @@ public abstract class AbstractExcelReport extends AbstractReport {
                 rownum++;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(); Printer.saveLogFile(e);
+            ;
         }
     }
 

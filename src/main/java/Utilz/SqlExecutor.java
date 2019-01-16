@@ -55,7 +55,8 @@ public class SqlExecutor extends Thread{
                         try {
                             lock.wait(period);
                            } catch (InterruptedException e) {
-                            e.printStackTrace();
+                            e.printStackTrace(); Printer.saveLogFile(e);
+                            ;
                         }
                     }
 

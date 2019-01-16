@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.HashMap;
 
+import static Utilz.Printer.printRowToMonitor;
 import static java.lang.Thread.sleep;
 
 public class ConnectorToOracle {
@@ -38,7 +39,7 @@ public class ConnectorToOracle {
         if (num != null && num != 0 && !conections.get(server).isClosed()) {
             num++;
             counterConections.put(server, num);
-            System.out.println("Count of connections for " + server + " is: " +counterConections.get(server));
+            printRowToMonitor("Count of connections for " + server + " is: " +counterConections.get(server));
             return conections.get(server);
         }
         num=0;
@@ -48,11 +49,11 @@ public class ConnectorToOracle {
                         BaseConstants.getInstance().getConnectionString(server),
                         BaseConstants.getInstance().getLog(server),
                         BaseConstants.getInstance().getPsw(server));
-        Printer.printRowToMonitor("Connected Successfully to Oracle instance " + server);
+        printRowToMonitor("Connected Successfully to Oracle instance " + server);
         conections.put(server, con);
         num++;
         counterConections.put(server, num);
-        System.out.println("Count of connections for " + server + " is first: " +counterConections.get(server));
+        printRowToMonitor("Count of connections for " + server + " is first: " +counterConections.get(server));
         return conections.get(server);
         }
     }
@@ -67,7 +68,7 @@ public class ConnectorToOracle {
             conections.get(server).close();
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(); Printer.saveLogFile(e); ;
             return false;
         }
     }

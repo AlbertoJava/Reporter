@@ -2,15 +2,12 @@ package Utilz;
 
 import org.junit.Before;
 import org.junit.Test;
-import sun.misc.Cleaner;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Formatter;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.stream.IntStream;
 
 import static org.junit.Assert.*;
 
@@ -33,7 +30,7 @@ public class SqlPropertiesTest {
     public void totoString() throws FileNotFoundException {
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
         Calendar c = new GregorianCalendar(2019,0,1);
-        assertEquals("01/01/2019", sqlProperties.toString(c));
+        assertEquals("01/01/2019", StringUtilz.toString(c));
     }
 
 

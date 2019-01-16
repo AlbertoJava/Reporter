@@ -22,6 +22,7 @@ import java.util.*;
 import java.util.List;
 import java.util.concurrent.PriorityBlockingQueue;
 
+import static Utilz.Printer.printRowToMonitor;
 import static java.lang.Thread.sleep;
 
 public class Controller {
@@ -72,7 +73,8 @@ public class Controller {
                     headers = zipFile.getFileHeaders();
                 }
             } catch (ZipException e) {
-                e.printStackTrace();
+                e.printStackTrace(); Printer.saveLogFile(e); ;
+                ;
             }
             for (FileHeader fh : headers) {
                 if (!fh.isDirectory() && fh.getFileName().equals("liesence.txt")) {
@@ -80,9 +82,11 @@ public class Controller {
                     try (BufferedReader bf = new BufferedReader(new InputStreamReader(zipFile.getInputStream(fh)))) {
                         return checkKey(bf.readLine());
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        e.printStackTrace(); Printer.saveLogFile(e); ;
+                        ;
                     } catch (ZipException e) {
-                        e.printStackTrace();
+                        e.printStackTrace(); Printer.saveLogFile(e); ;
+                        ;
                     }
                 }
             }
@@ -92,9 +96,11 @@ public class Controller {
            try (BufferedReader bf = new BufferedReader(new FileReader(BaseConstants.getLiesencePath())))
            {return checkKey(bf.readLine());
            } catch (FileNotFoundException e) {
-               e.printStackTrace();
+               e.printStackTrace(); Printer.saveLogFile(e); ;
+               ;
            } catch (IOException e) {
-               e.printStackTrace();
+               e.printStackTrace(); Printer.saveLogFile(e); ;
+               ;
            }
 
         }
@@ -119,11 +125,13 @@ public class Controller {
                 readFolderSql();
             }
         } catch (ZipException e) {
-            e.printStackTrace();
-            System.out.println("File " + BaseConstants.getInstance().getZipFileSQL() + " generated I/O exception!");
+            e.printStackTrace(); Printer.saveLogFile(e); ;
+            ;
+            printRowToMonitor("File " + BaseConstants.getInstance().getZipFileSQL() + " generated I/O exception!");
         } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Folder " + BaseConstants.getInstance().getPathSQL() + " generated I/O exception!");
+            e.printStackTrace(); Printer.saveLogFile(e); ;
+            ;
+            printRowToMonitor("Folder " + BaseConstants.getInstance().getPathSQL() + " generated I/O exception!");
         }
     }
 
@@ -151,7 +159,7 @@ public class Controller {
         }
         List<FileHeader> headers = zipFile.getFileHeaders();
         for (FileHeader fh : headers) {
-            System.out.println("Entry: " + fh.getFileName());
+            printRowToMonitor("Entry: " + fh.getFileName());
             if (!fh.isDirectory() && fh.getFileName().endsWith(".rep")) {
                 SqlProperties prop = new SqlProperties(true);
                 prop.loadFromFile(new InputStreamReader(zipFile.getInputStream(fh)), fh.getFileName());
@@ -162,7 +170,7 @@ public class Controller {
 
     public static void createSqlExecuter() {
         if (tasksQueue.size() > 0) {
-            Printer.printRowToMonitor(String.valueOf(tasksQueue.size()));
+            printRowToMonitor(String.valueOf(tasksQueue.size()));
             sqlExecutor = new SqlExecutor(tasksQueue);
             sqlExecutor.run();
         }
@@ -199,7 +207,8 @@ public class Controller {
                 conn.close();
                 break;
             } catch (SQLException e) {
-                e.printStackTrace();
+                e.printStackTrace(); Printer.saveLogFile(e); ;
+                ;
             }
 
         }
@@ -209,10 +218,11 @@ public class Controller {
             SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
             try {
                 cal.setTime(sdf.parse(sDate));
-                System.out.println("Oracle date " + sDate);
+                printRowToMonitor("Oracle date " + sDate);
                 return cal;
             } catch (ParseException e) {
-                e.printStackTrace();
+                e.printStackTrace(); Printer.saveLogFile(e); ;
+                ;
             }
         }
         return Calendar.getInstance();

@@ -1,10 +1,7 @@
 package Utilz;
 
 
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,12 +16,64 @@ import java.util.concurrent.ConcurrentMap;
 
 public  class Printer {
     private static ConcurrentMap<String, ResultTable> results=new ConcurrentHashMap();
+    private final static Object lock = new Object();
+
+    public static void saveLogFile(Exception e){
+        synchronized (lock){
+            Path path = Paths.get (getLogFile());
+            if (!Files.exists(path)&!Files.isDirectory(path)) {
+                try {
+                    Files.createFile(path);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            File file = new File (getLogFile());
+            try (PrintWriter pw = new PrintWriter(new FileWriter(file,true), true);) {
+                e.printStackTrace(pw);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            lock.notifyAll();
+        }
+
+    }
+
+    private static String getLogFile() {
+        return BaseConstants.logFile + "\\"+StringUtilz.toString(Calendar.getInstance()).replace("/","_") + "_logReporer.txt";
+    }
+
+    private static void saveLogFile(String text){
+        synchronized (lock) {
+            System.out.println(getLogFile());
+            Path path = Paths.get(getLogFile());
+            if (!Files.exists(path)&!Files.isDirectory(path)) {
+                try {
+                    Files.createFile(path);
+                } catch (IOException e) {
+                    e.printStackTrace(); Printer.saveLogFile(e);
+                }
+            }
+
+            try (FileWriter fw = new FileWriter(path.toString(), true)) {
+
+                // fw.write("--------------- " + StringUtilz.toString(Calendar.getInstance()) + "\n\r--------------- ");
+                fw.write(text + "\r\n");
+            } catch (IOException e) {
+                e.printStackTrace(); Printer.saveLogFile(e);
+
+            }
+            lock.notifyAll();
+        }
+    }
 
     public  synchronized static void printRowToMonitor(String text){
-            System.out.println(text);
+        System.out.println(text);
+        saveLogFile(text);
     }
     public synchronized static  void printLineToMonitor(String text){
-        System.out.print(text);
+        System.out.println(text);
+        saveLogFile(text);
     }
 
     public synchronized static void saveResult(String description, StringBuilder result){
@@ -42,7 +91,7 @@ public  class Printer {
             try {
                 Files.createFile(path);
             } catch (IOException e) {
-                e.printStackTrace();
+                e.printStackTrace(); Printer.saveLogFile(e); ;
                 return false;
             }
         }
@@ -74,7 +123,7 @@ public  class Printer {
             fout.write (secondString);
         }
          catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(); Printer.saveLogFile(e); ;
         }*/
 
         try {
@@ -82,7 +131,7 @@ public  class Printer {
                         (sb.toString()).getBytes("windows-1251"),
                          StandardOpenOption.TRUNCATE_EXISTING);
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(); Printer.saveLogFile(e); ;
             return false;
         }
         return true;

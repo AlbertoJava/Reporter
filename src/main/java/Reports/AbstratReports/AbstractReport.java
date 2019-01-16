@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import static Utilz.Printer.printRowToMonitor;
 import static java.lang.Thread.sleep;
 
 public abstract class AbstractReport implements Report,  Runnable {
@@ -36,7 +37,7 @@ public abstract class AbstractReport implements Report,  Runnable {
                 stm.close();
                 ConnectorToOracle.getInstance().closeConnection(getProperty("server"));
             } catch (SQLException e) {
-                e.printStackTrace();
+                e.printStackTrace(); Printer.saveLogFile(e); ;
             }
     }
 
@@ -48,18 +49,18 @@ public abstract class AbstractReport implements Report,  Runnable {
             stm.execute(sqlClause);
             resultSet = stm.getResultSet();
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(); Printer.saveLogFile(e); ;
         }
         catch (NullPointerException e){
-            e.printStackTrace();
+            e.printStackTrace(); Printer.saveLogFile(e); ;
         }
         finally {
             if (resultSet==null ){
-                System.out.println("Due to connection error thread "+ props.getProperty("description") + "  asleep for " +crashWaitingTime/(60*1000)+" min!");
+                printRowToMonitor("Due to connection error thread "+ props.getProperty("description") + "  asleep for " +crashWaitingTime/(60*1000)+" min!");
                 try {
                     sleep(crashWaitingTime);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    e.printStackTrace(); Printer.saveLogFile(e); ;
                }
             }
         }
@@ -80,7 +81,7 @@ public abstract class AbstractReport implements Report,  Runnable {
             try {
                 sleep(crashWaitingTime);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                e.printStackTrace(); Printer.saveLogFile(e); ;
             }
 
         }
@@ -88,7 +89,7 @@ public abstract class AbstractReport implements Report,  Runnable {
             try {
                 sleep(crashWaitingTime);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                e.printStackTrace(); Printer.saveLogFile(e); ;
             }
         }
         sqlExecutor.addQueue(this);

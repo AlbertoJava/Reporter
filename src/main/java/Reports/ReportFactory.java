@@ -2,11 +2,14 @@ package Reports;
 
 import Reports.AbstratReports.Report;
 import Utilz.BaseConstants;
+import Utilz.Printer;
 import Utilz.SqlExecutor;
 import Utilz.SqlProperties;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+
+import static Utilz.Printer.printRowToMonitor;
 
 public class ReportFactory {
     public static Report create (SqlProperties prop, SqlExecutor sqlExecutor)  {
@@ -17,17 +20,22 @@ public class ReportFactory {
                 report = (Report)c.newInstance(prop,sqlExecutor);
                 report.addProperty("path", prop.getProperty("excel"));
             } catch (InstantiationException e) {
-                e.printStackTrace();
+                e.printStackTrace(); Printer.saveLogFile(e);
             } catch (IllegalAccessException e) {
-                e.printStackTrace();
+                e.printStackTrace(); Printer.saveLogFile(e);
+                ;
             } catch (ClassNotFoundException e) {
-                System.out.println("Class not found!!! (report factory)");
-                e.printStackTrace();
+                printRowToMonitor("Class not found!!! (report factory)");
+                e.printStackTrace(); Printer.saveLogFile(e);
+                ;
             } catch (NoSuchMethodException e) {
-                e.printStackTrace();
+                e.printStackTrace(); Printer.saveLogFile(e);
+                ;
             } catch (InvocationTargetException e) {
-                e.printStackTrace();
+                e.printStackTrace(); Printer.saveLogFile(e);
+                ;
             }
+
         }
         else {
             report = new RegularMonitor(prop, sqlExecutor);

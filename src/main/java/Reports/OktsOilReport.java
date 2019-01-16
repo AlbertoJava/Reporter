@@ -1,6 +1,7 @@
 package Reports;
 
 import Reports.AbstratReports.AbstractExcelReport;
+import Utilz.Printer;
 import Utilz.SqlExecutor;
 import Utilz.SqlProperties;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -125,7 +126,7 @@ public class OktsOilReport extends AbstractExcelReport {
             }
             result.beforeFirst();
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(); Printer.saveLogFile(e); ;
         }
 
         return rownum;

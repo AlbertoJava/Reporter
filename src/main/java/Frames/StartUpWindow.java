@@ -2,6 +2,7 @@ package Frames;
 
 import Controller.Controller;
 import Utilz.BaseConstants;
+import Utilz.Printer;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import net.lingala.zip4j.model.FileHeader;
@@ -49,7 +50,7 @@ public class StartUpWindow extends JFrame {
             zipFile.removeFile(fHeader);
 
         } catch (ZipException e) {
-            e.printStackTrace();
+            e.printStackTrace(); Printer.saveLogFile(e); ;
         }
         try (InputStream is = new ByteArrayInputStream(text.getBytes("utf-8"))) {
             ZipParameters zp = new ZipParameters();
@@ -58,11 +59,11 @@ public class StartUpWindow extends JFrame {
             zp.setPassword(BaseConstants.getInstance().getZipPsw());
             zipFile.addStream(is, zp);
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            e.printStackTrace(); Printer.saveLogFile(e); ;
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(); Printer.saveLogFile(e); ;
         } catch (ZipException e) {
-            e.printStackTrace();
+            e.printStackTrace(); Printer.saveLogFile(e); ;
         }
     }
 

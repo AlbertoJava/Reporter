@@ -56,7 +56,8 @@ public  class RegularMonitor extends AbstractReport {
         Printer.printLineToMonitor(resultSB.toString());
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(); Printer.saveLogFile(e);
+            ;
             flag=false;
         }
         closeConnection(result);

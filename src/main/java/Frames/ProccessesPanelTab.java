@@ -57,8 +57,11 @@ public class ProccessesPanelTab extends JScrollPane implements Runnable{
                 if (row==-1) return;
                 String desc = (String)proccessesTable.getModel().getValueAt(row,0);
                 List<StringBuilder> res =  Printer.getResults(desc);
-                myFrame.getTextArea().setText("Last run time " + res.get(1).toString()+ "\r\n");
-                myFrame.getTextArea().append(res.get(0).toString());
+                if (!res.get(0).toString().equals(myFrame.getTextArea())){
+                    myFrame.getTextArea().setText(res.get(0).toString());
+                }
+                //myFrame.getTextArea().setText("Last run time " + res.get(1).toString()+ "\r\n");
+                //myFrame.getTextArea().append(res.get(0).toString());
             }
         });
         proccessesTable.setSelectionModel(ssm);
@@ -107,7 +110,7 @@ public class ProccessesPanelTab extends JScrollPane implements Runnable{
                 formatted_time.append(":");
             }
             formatted_time.deleteCharAt(formatted_time.length()-1);
-           // System.out.println(formatted_time);
+           // printRowToMonitor(formatted_time);
             return formatted_time.toString();
     }
 
@@ -147,7 +150,7 @@ public class ProccessesPanelTab extends JScrollPane implements Runnable{
 
                 sleep(1000);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                e.printStackTrace(); Printer.saveLogFile(e); ;
             }
         }
     }

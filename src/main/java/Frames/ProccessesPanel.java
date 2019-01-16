@@ -190,7 +190,7 @@ public class ProccessesPanel extends JScrollPane {
                 formatted_time.append(":");
             }
             formatted_time.deleteCharAt(formatted_time.length()-1);
-            //System.out.println(formatted_time);
+            //printRowToMonitor(formatted_time);
             return formatted_time.toString();
     }
 

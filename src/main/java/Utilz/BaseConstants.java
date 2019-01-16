@@ -15,6 +15,7 @@ public  class BaseConstants {
     private  String zipFileSQL = "C:\\Java\\SQL.zip";
     private String localExcelReportPath = "C:\\RegularReports\\";
     private static String liesencePath="C:\\Java\\SQL\\liesence.txt";
+    public final static String logFile = "C:\\Java";
 
     public static String getLiesencePath() {
         return liesencePath;
@@ -40,7 +41,7 @@ public  class BaseConstants {
         try {
             startProps.load(new FileInputStream(new File(startFile)));
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(); Printer.saveLogFile(e); ;
         }
         // String path, String pathSQL, String cat, String log, String psw
         path = startProps.getProperty("path");

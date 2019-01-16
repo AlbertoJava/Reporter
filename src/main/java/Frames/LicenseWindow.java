@@ -2,6 +2,7 @@ package Frames;
 
 import Controller.Controller;
 import Utilz.BaseConstants;
+import Utilz.Printer;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import net.lingala.zip4j.model.FileHeader;
@@ -12,6 +13,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+
+import static Utilz.Printer.printRowToMonitor;
 
 public class LicenseWindow extends JFrame {
     private JLabel textLabel = new JLabel("<html>The period of use of the software has expired. Enter the new key.<br>Contact e-mail: albtutanota@tutanota.com<html>");
@@ -38,7 +41,7 @@ public class LicenseWindow extends JFrame {
         logginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Button clicked!!!");
+                printRowToMonitor("Button clicked!!!");
                 if (Controller.checkKey(logginText.getText())){
                     saveKey(logginText.getText());
                     Controller.init(BaseConstants.isIsZip());
@@ -63,7 +66,7 @@ public class LicenseWindow extends JFrame {
                 zipFile.removeFile(fHeader);
 
             } catch (ZipException e) {
-                e.printStackTrace();
+                e.printStackTrace(); Printer.saveLogFile(e); ;
             }
             try (InputStream is = new ByteArrayInputStream(text.getBytes("utf-8"))) {
                 ZipParameters zp = new ZipParameters();
@@ -72,11 +75,11 @@ public class LicenseWindow extends JFrame {
                 zp.setPassword(BaseConstants.getInstance().getZipPsw());
                 zipFile.addStream(is, zp);
             } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+                e.printStackTrace(); Printer.saveLogFile(e); ;
             } catch (IOException e) {
-                e.printStackTrace();
+                e.printStackTrace(); Printer.saveLogFile(e); ;
             } catch (ZipException e) {
-                e.printStackTrace();
+                e.printStackTrace(); Printer.saveLogFile(e); ;
             }
         }
         else{
@@ -84,9 +87,9 @@ public class LicenseWindow extends JFrame {
             {
                 bfw.write(text);
             } catch (FileNotFoundException e) {
-                e.printStackTrace();
+                e.printStackTrace(); Printer.saveLogFile(e); ;
             } catch (IOException e) {
-                e.printStackTrace();
+                e.printStackTrace(); Printer.saveLogFile(e); ;
             }
 
         }

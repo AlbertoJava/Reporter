@@ -1,6 +1,7 @@
 package Frames;
 
 import Utilz.BaseConstants;
+import Utilz.Printer;
 import Utilz.SqlProperties;
 import net.lingala.zip4j.exception.ZipException;
 import net.lingala.zip4j.model.FileHeader;
@@ -20,6 +21,8 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
+
+import static Utilz.Printer.printRowToMonitor;
 
 
 public class View1 {
@@ -55,7 +58,7 @@ private void test1 (){
     try {
         readZipFile();
     } catch (ZipException e) {
-        e.printStackTrace();
+        e.printStackTrace(); Printer.saveLogFile(e); ;
     }
     printMap();
     initWorkingPool(false);
@@ -75,7 +78,7 @@ private void test1 (){
     try {
         Thread.sleep (1000);
     } catch (InterruptedException e) {
-        e.printStackTrace();
+        e.printStackTrace(); Printer.saveLogFile(e); ;
     }
     //frame.getProccessesPanel().updateProccessList();
 }
@@ -88,11 +91,11 @@ private void test1 (){
                 readFolderSql();
             }
         } catch (ZipException e) {
-            e.printStackTrace();
-            System.out.println("File " + BaseConstants.getInstance().getZipFileSQL() + " generated I/O exception!");
+            e.printStackTrace(); Printer.saveLogFile(e); ;
+            printRowToMonitor("File " + BaseConstants.getInstance().getZipFileSQL() + " generated I/O exception!");
         } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Folder " + BaseConstants.getInstance().getPathSQL() + " generated I/O exception!");
+            e.printStackTrace(); Printer.saveLogFile(e); ;
+            printRowToMonitor("Folder " + BaseConstants.getInstance().getPathSQL() + " generated I/O exception!");
         }
     }
 
@@ -120,7 +123,7 @@ private void test1 (){
       }
         List<FileHeader> headers =zipFile.getFileHeaders();
         for (FileHeader fh:headers) {
-            System.out.println("Entry: " + fh.getFileName());
+            printRowToMonitor("Entry: " + fh.getFileName());
             if (!fh.isDirectory() && fh.getFileName().endsWith(".rep")) {
                 SqlProperties prop = new SqlProperties(true);
                 prop.loadFromFile(new InputStreamReader(zipFile.getInputStream(fh)),fh.getFileName());
@@ -131,9 +134,9 @@ private void test1 (){
     private static void printMap(){
         for (HashMap.Entry<SqlProperties,Boolean> pair:
                 statusmap.entrySet()) {
-            System.out.println( "-------------------->>>>");
-            System.out.println( pair.getKey().getProperty("description"));
-            System.out.println( pair.getKey().getProperty("sql"));
+            printRowToMonitor( "-------------------->>>>");
+            printRowToMonitor( pair.getKey().getProperty("description"));
+            printRowToMonitor( pair.getKey().getProperty("sql"));
         }
     }
 }
