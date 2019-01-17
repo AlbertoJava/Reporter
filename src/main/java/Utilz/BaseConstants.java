@@ -51,7 +51,8 @@ public  class BaseConstants {
         isZip = Boolean.valueOf(startProps.getProperty("isZip").trim());
 
         dbase.put("SZATP",new DBConnection("post190","post190", "jdbc:oracle:thin:@10.37.0.7:1521:SZATP"));
-        dbase.put("CAT",new DBConnection("opsur","opsur", "jdbc:oracle:thin:@10.37.12.20:1521/WH01"));
+        dbase.put("CAT",new DBConnection("okts","okts", "jdbc:oracle:thin:@10.37.12.20:1521/WH01"));
+        dbase.put("CAT1",new DBConnection("opsur","opsur", "jdbc:oracle:thin:@10.37.12.20:1521/WH01"));
         dbase.put("HOME",new DBConnection("test","test", "jdbc:oracle:thin:@localhost:1521:orcle"));
         dbase.put("HOME1",new DBConnection("test","test", "jdbc:oracle:thin:@localhost:1521:orcle"));
     }
