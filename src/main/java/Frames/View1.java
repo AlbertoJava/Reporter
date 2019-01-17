@@ -13,6 +13,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 import java.awt.*;
 import java.io.*;
+import java.nio.charset.Charset;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.sql.SQLOutput;
@@ -126,7 +127,7 @@ private void test1 (){
             printRowToMonitor("Entry: " + fh.getFileName());
             if (!fh.isDirectory() && fh.getFileName().endsWith(".rep")) {
                 SqlProperties prop = new SqlProperties(true);
-                prop.loadFromFile(new InputStreamReader(zipFile.getInputStream(fh)),fh.getFileName());
+                prop.loadFromFile(new InputStreamReader(zipFile.getInputStream(fh), Charset.forName("UTF-8")),fh.getFileName());
                 statusmap.put(prop,false);
             }
         }

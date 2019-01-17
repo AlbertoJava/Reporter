@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -47,7 +48,7 @@ public class SqlPropertiesTest {
         String filePath = "TestFilePath";
         HashMap<String, String> result =null;
 
-        InputStreamReader isr = new InputStreamReader(new ByteArrayInputStream(sqlProp.getBytes()));
+        InputStreamReader isr = new InputStreamReader(new ByteArrayInputStream(sqlProp.getBytes()), Charset.forName("UTF-8"));
 
         result = sqlProperties.loadFromFile(isr, filePath);
         System.out.println("startTime = " +sqlProperties.getStartTime().getTime());

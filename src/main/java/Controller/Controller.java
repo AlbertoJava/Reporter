@@ -10,6 +10,7 @@ import net.lingala.zip4j.model.FileHeader;
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
+import java.nio.charset.Charset;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.sql.Connection;
@@ -79,7 +80,7 @@ public class Controller {
             for (FileHeader fh : headers) {
                 if (!fh.isDirectory() && fh.getFileName().equals("liesence.txt")) {
                     BaseConstants.setLiesencePath(fh.getFileName());
-                    try (BufferedReader bf = new BufferedReader(new InputStreamReader(zipFile.getInputStream(fh)))) {
+                    try (BufferedReader bf = new BufferedReader(new InputStreamReader(zipFile.getInputStream(fh), Charset.forName("UTF-8")))) {
                         return checkKey(bf.readLine());
                     } catch (IOException e) {
                         e.printStackTrace(); Printer.saveLogFile(e); ;
@@ -92,8 +93,7 @@ public class Controller {
             }
             return false;
         } else {
-           /*если из файла*/
-           try (BufferedReader bf = new BufferedReader(new FileReader(BaseConstants.getLiesencePath())))
+           try (BufferedReader bf = new BufferedReader(new InputStreamReader(new FileInputStream(BaseConstants.getLiesencePath()),Charset.forName("UTF-8"))))
            {return checkKey(bf.readLine());
            } catch (FileNotFoundException e) {
                e.printStackTrace(); Printer.saveLogFile(e); ;
@@ -162,7 +162,7 @@ public class Controller {
             printRowToMonitor("Entry: " + fh.getFileName());
             if (!fh.isDirectory() && fh.getFileName().endsWith(".rep")) {
                 SqlProperties prop = new SqlProperties(true);
-                prop.loadFromFile(new InputStreamReader(zipFile.getInputStream(fh)), fh.getFileName());
+                prop.loadFromFile(new InputStreamReader(zipFile.getInputStream(fh),Charset.forName("UTF-8")), fh.getFileName());
                 tasksQueue.put(prop);
             }
         }

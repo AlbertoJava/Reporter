@@ -3,6 +3,8 @@ package Utilz;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -39,7 +41,7 @@ public  class BaseConstants {
     private BaseConstants() {
         Properties startProps = new Properties();
         try {
-            startProps.load(new FileInputStream(new File(startFile)));
+            startProps.load(new InputStreamReader(new FileInputStream(new File(startFile)), Charset.forName("UTF-8")));
         } catch (IOException e) {
             e.printStackTrace(); Printer.saveLogFile(e); ;
         }
