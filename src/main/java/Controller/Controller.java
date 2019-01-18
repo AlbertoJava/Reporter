@@ -78,7 +78,7 @@ public class Controller {
                 ;
             }
             for (FileHeader fh : headers) {
-                if (!fh.isDirectory() && fh.getFileName().equals("liesence.txt")) {
+                if (!fh.isDirectory() && fh.getFileName().endsWith("liesence.txt")) {
                     BaseConstants.setLiesencePath(fh.getFileName());
                     try (BufferedReader bf = new BufferedReader(new InputStreamReader(zipFile.getInputStream(fh), Charset.forName("UTF-8")))) {
                         return checkKey(bf.readLine());

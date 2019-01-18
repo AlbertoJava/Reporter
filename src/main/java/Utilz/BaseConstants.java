@@ -49,6 +49,7 @@ public  class BaseConstants {
         path = startProps.getProperty("path");
         pathSQL = startProps.getProperty("pathSQL");
         isZip = Boolean.valueOf(startProps.getProperty("isZip").trim());
+        zipFileSQL=startProps.getProperty("map")==null?zipFileSQL:startProps.getProperty("map");
 
         dbase.put("SZATP",new DBConnection("post190","post190", "jdbc:oracle:thin:@10.37.0.7:1521:SZATP"));
         dbase.put("CAT",new DBConnection("okts","okts", "jdbc:oracle:thin:@10.37.12.20:1521/WH01"));
