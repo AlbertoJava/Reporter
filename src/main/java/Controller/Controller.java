@@ -44,7 +44,13 @@ public class Controller {
             startFrame.dispose();
             new LicenseWindow();
         } else {
-            init(BaseConstants.getInstance().isIsZip());
+           SwingUtilities.invokeLater(new Runnable() {
+               @Override
+               public void run() {
+                   init(BaseConstants.getInstance().isIsZip());
+               }
+           });
+
         }
     }
 

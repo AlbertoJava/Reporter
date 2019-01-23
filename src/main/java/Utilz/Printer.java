@@ -7,6 +7,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -51,7 +53,7 @@ public  class Printer {
                 try {
                     Files.createFile(path);
                 } catch (IOException e) {
-                    e.printStackTrace(); Printer.saveLogFile(e);
+                    e.printStackTrace();
                 }
             }
 
@@ -60,7 +62,7 @@ public  class Printer {
                 // fw.write("--------------- " + StringUtilz.toString(Calendar.getInstance()) + "\n\r--------------- ");
                 fw.write(text + "\r\n");
             } catch (IOException e) {
-                e.printStackTrace(); Printer.saveLogFile(e);
+                e.printStackTrace();
 
             }
             lock.notifyAll();
@@ -91,7 +93,7 @@ public  class Printer {
             try {
                 Files.createFile(path);
             } catch (IOException e) {
-                e.printStackTrace(); Printer.saveLogFile(e); ;
+                e.printStackTrace(); ;
                 return false;
             }
         }
@@ -104,6 +106,11 @@ public  class Printer {
             header.append("--------------------------------");
             header.append(pair.getKey());
             header.append(' ');
+            System.out.println("test befor convert date tostring");
+            System.out.println(pair.getValue().getDateTime());
+          /*  DateFormat df=new SimpleDateFormat("dd.MM.yyyy");
+            String dateTime = df.format(pair.getValue().getDateTime());
+            System.out.println(dateTime);*/
             header.append(pair.getValue().getDateTime());
             header.append("-----------------------------------\r\n");
 
@@ -123,7 +130,7 @@ public  class Printer {
             fout.write (secondString);
         }
          catch (IOException e) {
-            e.printStackTrace(); Printer.saveLogFile(e); ;
+            e.printStackTrace(); ;
         }*/
 
         try {
@@ -131,7 +138,7 @@ public  class Printer {
                         (sb.toString()).getBytes("windows-1251"),
                          StandardOpenOption.TRUNCATE_EXISTING);
         } catch (IOException e) {
-            e.printStackTrace(); Printer.saveLogFile(e); ;
+            e.printStackTrace(); ;
             return false;
         }
         return true;
@@ -157,6 +164,8 @@ public  class Printer {
         public ResultTable(StringBuilder result, Calendar c) {
             this.result=result;
             dateTime=toStringBulder(c);
+
+
         }
 
         private StringBuilder toStringBulder(Calendar c) {
@@ -170,7 +179,7 @@ public  class Printer {
             result.append(' ');
             result.append(align(c.get(Calendar.DAY_OF_MONTH)));
             result.append('.');
-            result.append(align(c.get(Calendar.MONTH)));
+            result.append(align(c.get(Calendar.MONTH)+1));
             result.append('.');
             result.append(align(c.get(Calendar.YEAR)));
             return result;
