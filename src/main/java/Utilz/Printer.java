@@ -84,7 +84,7 @@ public  class Printer {
         saveMaptoFile();
     }
 
-    private static boolean saveMaptoFile(){
+    private synchronized static boolean saveMaptoFile(){
         Calendar c = new GregorianCalendar();
         String sCurrentDate = c.get(Calendar.DATE) + "." + (c.get(Calendar.MONTH) + 1) + "." + c.get(Calendar.YEAR);
 

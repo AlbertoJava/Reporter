@@ -44,6 +44,7 @@ public class Controller {
             startFrame.dispose();
             new LicenseWindow();
         } else {
+            startFrame.dispose();
            SwingUtilities.invokeLater(new Runnable() {
                @Override
                public void run() {
@@ -63,7 +64,6 @@ public class Controller {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getProccessesPanel().init(sqlExecutor.getWaitingQueue());
         frame.pack();
-        startFrame.dispose();
         frame.setVisible(true);
 
     }
@@ -102,11 +102,9 @@ public class Controller {
            try (BufferedReader bf = new BufferedReader(new InputStreamReader(new FileInputStream(BaseConstants.getLiesencePath()),Charset.forName("UTF-8"))))
            {return checkKey(bf.readLine());
            } catch (FileNotFoundException e) {
-               e.printStackTrace(); Printer.saveLogFile(e); ;
-               ;
+               e.printStackTrace(); Printer.saveLogFile(e);
            } catch (IOException e) {
-               e.printStackTrace(); Printer.saveLogFile(e); ;
-               ;
+               e.printStackTrace(); Printer.saveLogFile(e);
            }
 
         }
