@@ -21,6 +21,7 @@ public class SqlProperties implements Comparable<SqlProperties>{
     private boolean isZip;
     private boolean isRunning;
     private int localPeriod=0;
+    private  static  final Object lock = new Object();
 
     //private Calendar timeToStart=null;
     /*
@@ -167,10 +168,13 @@ public class SqlProperties implements Comparable<SqlProperties>{
 
         startTime=toCalendar(StringUtilz.toString(date2)+ " 23:59:59");
         if (isZip) {
-            return updatePropertiesZipFile("date2", StringUtilz.toString(date2)) | updatePropertiesZipFile("date1", StringUtilz.toString(date1));
+
+            boolean r= updatePropertiesZipFile("date2", StringUtilz.toString(date2)) | updatePropertiesZipFile("date1", StringUtilz.toString(date1));
+            return r;
         }
         else{
-            return updatePropertiesFile("date2", StringUtilz.toString(date2)) | updatePropertiesFile("date1", StringUtilz.toString(date1));
+            boolean r= updatePropertiesFile("date2", StringUtilz.toString(date2)) | updatePropertiesFile("date1", StringUtilz.toString(date1));
+            return r;
         }
     }
 
@@ -221,53 +225,67 @@ public class SqlProperties implements Comparable<SqlProperties>{
         return true;
     }
 
-    private synchronized boolean  updatePropertiesZipFile(String nameProperty, String value)  {
-        /*read source in zip file to StringBuilder*/
-        String zipFilePath = BaseConstants.getInstance().getZipFileSQL();
-        FileHeader fHeader=null;
-        ZipFile zipFile =null;
-                try {
-                zipFile=new ZipFile(zipFilePath);
-                if (zipFile.isEncrypted()){
-                        zipFile.setPassword(BaseConstants.getInstance().getZipPsw());
-                    }
-                fHeader =zipFile.getFileHeader(sourceFile);
-                } catch (ZipException e) {
-                    e.printStackTrace(); Printer.saveLogFile(e); ;
+    private  boolean  updatePropertiesZipFile(String nameProperty, String value)  {
+        synchronized (lock) {
+            /*read source in zip file to StringBuilder*/
+            String zipFilePath = BaseConstants.getInstance().getZipFileSQL();
+            FileHeader fHeader = null;
+            ZipFile zipFile = null;
+            try {
+                zipFile = new ZipFile(zipFilePath);
+                if (zipFile.isEncrypted()) {
+                    zipFile.setPassword(BaseConstants.getInstance().getZipPsw());
                 }
-        StringBuilder stringB=null;
-         try (InputStreamReader isr =new InputStreamReader(
-                 zipFile.getInputStream(fHeader),"utf-8"
+                fHeader = zipFile.getFileHeader(sourceFile);
+            } catch (ZipException e) {
+                e.printStackTrace();
+                Printer.saveLogFile(e);
+                try {
+                    wait(10000);
+                } catch (InterruptedException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            StringBuilder stringB = null;
+            try (InputStreamReader isr = new InputStreamReader(
+                    zipFile.getInputStream(fHeader), "utf-8"
             )
-         ) {
-             isr.getEncoding();
-              stringB = getFileContextFromStream(isr);
-              zipFile.removeFile(fHeader);
-         } catch (IOException e) {
-             e.printStackTrace(); Printer.saveLogFile(e); ;
-         } catch (ZipException e) {
-             e.printStackTrace(); Printer.saveLogFile(e); ;
-         }
-        /*replace value in StringBuilder*/
-        int start = stringB.indexOf(map.get(nameProperty));
-        int end = start + map.get(nameProperty).length();
-        stringB.replace(start,end,value);
-        //map.put(nameProperty,value);
-        /*write StringBulder to source in zip file */
-        map.put(nameProperty,value);
-        byte [] b=null;
-        try (InputStream is = new ByteArrayInputStream(stringB.toString().getBytes("utf-8"))) {
-            //b = stringB.toString().getBytes("UTF-8");
-            ZipParameters zp = new ZipParameters();
-            zp.setSourceExternalStream(true);
-            zp.setFileNameInZip(sourceFile);
-            zp.setPassword(BaseConstants.getInstance().getZipPsw());
-            zipFile.addStream(is, zp);
+            ) {
+                isr.getEncoding();
+                stringB = getFileContextFromStream(isr);
+                zipFile.removeFile(fHeader);
+            } catch (IOException e) {
+                e.printStackTrace();
+                Printer.saveLogFile(e);
+            } catch (ZipException e) {
+                e.printStackTrace();
+                Printer.saveLogFile(e);
+            }
+            /*replace value in StringBuilder*/
+            int start = stringB.indexOf(map.get(nameProperty));
+            int end = start + map.get(nameProperty).length();
+            stringB.replace(start, end, value);
             //map.put(nameProperty,value);
-        } catch (IOException e) {
-            e.printStackTrace(); Printer.saveLogFile(e); ;
-        } catch (ZipException e) {
-            e.printStackTrace(); Printer.saveLogFile(e); ;
+            /*write StringBulder to source in zip file */
+            map.put(nameProperty, value);
+            byte[] b = null;
+            try (InputStream is = new ByteArrayInputStream(stringB.toString().getBytes("utf-8"))) {
+                //b = stringB.toString().getBytes("UTF-8");
+                ZipParameters zp = new ZipParameters();
+                zp.setSourceExternalStream(true);
+                zp.setFileNameInZip(sourceFile);
+                zp.setPassword(BaseConstants.getInstance().getZipPsw());
+                zipFile.addStream(is, zp);
+                //map.put(nameProperty,value);
+            } catch (IOException e) {
+                e.printStackTrace();
+                Printer.saveLogFile(e);
+
+            } catch (ZipException e) {
+                e.printStackTrace();
+                Printer.saveLogFile(e);
+
+            }
         }
         return true;
     }

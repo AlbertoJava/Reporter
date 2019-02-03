@@ -57,11 +57,20 @@ public class ProccessesPanelTab extends JScrollPane implements Runnable{
                 if (row==-1) return;
                 String desc = (String)proccessesTable.getModel().getValueAt(row,0);
                 List<StringBuilder> res =  Printer.getResults(desc);
+                /*
                 if (!res.get(0).toString().equals(myFrame.getTextArea())){
                     myFrame.getTextArea().setText(res.get(0).toString());
+                    }*/
+                if (!res.get(0).toString().equals(myFrame.getTextArea().getText().split("\r\n"))){
+                    String resText="";
+                    String[]arr=res.get(0).toString().split("\r\n");
+                    for (int i=0;i<arr.length;i++){
+                        int length =  arr[i].length()>300?300:arr[i].length();
+                        resText+=arr[i].substring(0,length)+ "\r\n";
+                    }
+                    myFrame.getTextArea().setText(resText);
                 }
-                //myFrame.getTextArea().setText("Last run time " + res.get(1).toString()+ "\r\n");
-                //myFrame.getTextArea().append(res.get(0).toString());
+
             }
         });
         proccessesTable.setSelectionModel(ssm);
@@ -69,8 +78,8 @@ public class ProccessesPanelTab extends JScrollPane implements Runnable{
             proccessesTable.getColumnModel().getColumn(i).setCellRenderer(new Renderer());
         }
         setViewportView(proccessesTable);
-        setBorder(BorderFactory.createTitledBorder("This is ScrollPanel"));
-        setPreferredSize(new Dimension(600,100));
+        setBorder(BorderFactory.createTitledBorder("TaskPanel"));
+        setPreferredSize(new Dimension(500,100));
         updateJComponentsFromQueue();
         (new Thread(this)).start();
     }

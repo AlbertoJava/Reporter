@@ -5,9 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 public  class BaseConstants {
     /*Initinalizating parameters*/
@@ -56,6 +54,17 @@ public  class BaseConstants {
         dbase.put("CAT1",new DBConnection("opsur","opsur", "jdbc:oracle:thin:@10.37.12.20:1521/WH01"));
         dbase.put("HOME",new DBConnection("test","test", "jdbc:oracle:thin:@localhost:1521:orcle"));
         dbase.put("HOME1",new DBConnection("test","test", "jdbc:oracle:thin:@localhost:1521:orcle"));
+        List<String> keys = new ArrayList(startProps.keySet());
+        for (String key:keys ) {
+            if (key.startsWith("BD_")){
+
+                String [] arr  = String.valueOf(startProps.get(key)).split("_");
+                dbase.put (key.substring(3),
+                        new DBConnection(arr[0],arr[1],arr[2])
+                );
+
+            }
+        }
     }
 
     public static synchronized BaseConstants getInstance(){

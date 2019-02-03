@@ -89,9 +89,10 @@ public abstract class AbstractReport implements Report,  Runnable {
             try {
                 sleep(crashWaitingTime);
             } catch (InterruptedException e) {
-                e.printStackTrace(); Printer.saveLogFile(e); ;
+                e.printStackTrace(); Printer.saveLogFile(e);
             }
         }
+        System.out.println("run finished for "  + getProps().getProperty("description"));
         sqlExecutor.addQueue(this);
     }
 

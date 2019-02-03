@@ -21,7 +21,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
-import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.*;
 
 import static Utilz.Printer.printRowToMonitor;
 import static java.lang.Thread.sleep;
@@ -60,7 +60,7 @@ public class Controller {
         // Here starts sqlExecuter with tasksQueue
         new Thread(() -> createSqlExecuter()).start();
         frame = new MyFrame("Hello world of SWING!", null);
-        frame.setPreferredSize(new Dimension(1500, 500));
+        frame.setPreferredSize(new Dimension(1000, 500));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getProccessesPanel().init(sqlExecutor.getWaitingQueue());
         frame.pack();
@@ -186,37 +186,92 @@ public class Controller {
         Calendar c = stringToCalendar(decodeData);
         if (c == null) return false;
         c.add(Calendar.MONTH,-1);
-        if (c.getTimeInMillis() - getCurrentDate().getTimeInMillis() >= 0) {
+        long currentDate =0;
+
+        try {
+            currentDate = getCurrentDate().getTimeInMillis();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if (c.getTimeInMillis() - currentDate >= 0) {
             return true;
         } else {
             return false;
         }
     }
 
-    private static Calendar getCurrentDate() {
+    private static Calendar getCurrentDate() throws InterruptedException, TimeoutException, ExecutionException {
         String sqlClause = "select to_char (current_date, 'dd.MM.yyyy') from dual";
-        String sDate = null;
-        for (Map.Entry<String, BaseConstants.DBConnection> pair :
-                BaseConstants.getDbase().entrySet()) {
-            try {
-                Connection conn = ConnectorToOracle.getInstance().getConnection(pair.getKey());
-                if (conn==null) continue;
-                Statement stm = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-                stm.execute(sqlClause);
-                ResultSet resultSet = stm.getResultSet();
-                resultSet.next();
-                sDate = resultSet.getString(1);
-                resultSet.close();
-                stm.close();
-                conn.close();
-                break;
-            } catch (SQLException e) {
-                e.printStackTrace(); Printer.saveLogFile(e); ;
-                ;
+        FutureTask task = new FutureTask<String>(new Callable() {
+            @Override
+            public Object call() throws Exception {
+                String sDate=null;
+                for (Map.Entry<String, BaseConstants.DBConnection> pair :
+                        BaseConstants.getDbase().entrySet()) {
+                    try {
+                        Connection conn = ConnectorToOracle.getInstance().getConnection(pair.getKey());
+                        if (conn==null) continue;
+                        Statement stm = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                        stm.execute(sqlClause);
+                        ResultSet resultSet = stm.getResultSet();
+                        resultSet.next();
+                        sDate = resultSet.getString(1);
+                        resultSet.close();
+                        stm.close();
+                        conn.close();
+                        break;
+                    } catch (SQLException e) {
+                        e.printStackTrace(); Printer.saveLogFile(e);
+                    }
+
+                }
+                return sDate;
             }
+        });
+        Thread th = new Thread (task);
+        th.start();
 
-        }
 
+
+/*        Thread thr = new Thread() {
+            String sDate = null;
+            public String getsDate() {
+                return sDate;
+            }
+            public void setsDate(String sDate) {
+                this.sDate = sDate;
+            }
+            @Override
+            public void run() {
+                for (Map.Entry<String, BaseConstants.DBConnection> pair :
+                        BaseConstants.getDbase().entrySet()) {
+                    try {
+                        Connection conn = ConnectorToOracle.getInstance().getConnection(pair.getKey());
+                        if (conn==null) continue;
+                        Statement stm = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                        stm.execute(sqlClause);
+                        ResultSet resultSet = stm.getResultSet();
+                        resultSet.next();
+                        sDate = resultSet.getString(1);
+                        resultSet.close();
+                        stm.close();
+                        conn.close();
+                        break;
+                    } catch (SQLException e) {
+                        e.printStackTrace(); Printer.saveLogFile(e);
+                    }
+
+                }
+            }
+        };
+        thr.start();
+        thr.join();*/
+        String sDate= (String) task.get(1000*60/**10*/, TimeUnit.MILLISECONDS);
         if (sDate != null) {
             Calendar cal = new GregorianCalendar();
             SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
