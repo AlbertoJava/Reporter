@@ -13,6 +13,7 @@ public class MyFrame extends JFrame {
     private ProccessesPanelTab proccessesPanel;
     private TestPanel testPanel;
     private ResultView resultView = new ResultView();
+    private JTextArea description = new JTextArea();
     //private JTextArea textArea = new JTextArea();
 
 
@@ -23,10 +24,10 @@ public class MyFrame extends JFrame {
         //Add swing components to content pane
         Container c = getContentPane();
         proccessesPanel=new ProccessesPanelTab();
-  /*      c.add(resultView,BorderLayout.CENTER);
-        c.add(proccessesPanel, BorderLayout.WEST);*/
         JSplitPane jSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true);
-        jSplitPane.setRightComponent(resultView);
+        JSplitPane right = setHorizontalSplitPanel();
+        jSplitPane.setResizeWeight(0.5);
+        jSplitPane.setRightComponent(right);
         jSplitPane.setLeftComponent(proccessesPanel);
         BorderLayout bl = new BorderLayout();
         c.setLayout(bl);
@@ -39,9 +40,26 @@ public class MyFrame extends JFrame {
        public ProccessesPanelTab getProccessesPanel() {
         return proccessesPanel;
     }
+       public ResultView getTextArea() { return resultView;}
+       public JTextArea getDescriptionArea(){return description;}
 
-    public ResultView getTextArea() {
+        private JSplitPane setHorizontalSplitPanel(){
+            JSplitPane jSplitPaneInternal = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true);
+            jSplitPaneInternal.setTopComponent(resultView);
+            description.setLineWrap(true);
+            description.setPreferredSize(new Dimension(300,100));
+            JScrollPane jsc = new JScrollPane();
+            jsc.setViewportView(description);
+            jSplitPaneInternal.setBottomComponent(jsc);
+            return jSplitPaneInternal;
 
-        return resultView;
+        }
+    private JPanel setRightSplitPanel(){
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        panel.add(resultView,BorderLayout.NORTH);
+        //description.setLineWrap(true);
+        panel.add(description,BorderLayout.SOUTH);
+        return panel;
     }
 }

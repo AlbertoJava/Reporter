@@ -70,6 +70,20 @@ public class ProccessesPanelTab extends JScrollPane implements Runnable{
                     }
                     myFrame.getTextArea().setText(resText);
                 }
+                for (SqlProperties sqlP:taskList ) {
+                    if (sqlP.getProperty("description").equals(desc)){
+                        if (myFrame.getDescriptionArea().getText()==null && sqlP.getProperty("extendedDescription")!=null){
+                            myFrame.getDescriptionArea().setText(sqlP.getProperty("extendedDescription"));
+                        }
+                        else if (myFrame.getDescriptionArea().getText()==null && sqlP.getProperty("extendedDescription")==null){
+                            continue;
+                        }
+                        else if (!myFrame.getDescriptionArea().getText().equals(sqlP.getProperty("extendedDescription"))){
+                            myFrame.getDescriptionArea().setText(sqlP.getProperty("extendedDescription"));
+                        }
+                    }
+                }
+
 
             }
         });

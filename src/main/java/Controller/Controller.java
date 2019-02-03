@@ -59,7 +59,7 @@ public class Controller {
         initWorkingPool(isZip);
         // Here starts sqlExecuter with tasksQueue
         new Thread(() -> createSqlExecuter()).start();
-        frame = new MyFrame("Hello world of SWING!", null);
+        frame = new MyFrame("Monitoring - analyzing. Useful edition.", null);
         frame.setPreferredSize(new Dimension(1000, 500));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getProccessesPanel().init(sqlExecutor.getWaitingQueue());
