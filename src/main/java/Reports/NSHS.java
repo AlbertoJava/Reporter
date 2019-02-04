@@ -49,7 +49,6 @@ public class NSHS extends AbstractExcelReport {
 
         try {
             result.last();
-            System.out.println(result.getRow());
             result.beforeFirst();
         } catch (SQLException e) {
             e.printStackTrace();

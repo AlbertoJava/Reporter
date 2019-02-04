@@ -50,7 +50,7 @@ public class StartUpWindow extends JFrame {
             zipFile.removeFile(fHeader);
 
         } catch (ZipException e) {
-            e.printStackTrace(); Printer.saveLogFile(e); ;
+            Printer.printLog(e);
         }
         try (InputStream is = new ByteArrayInputStream(text.getBytes("utf-8"))) {
             ZipParameters zp = new ZipParameters();
@@ -59,11 +59,11 @@ public class StartUpWindow extends JFrame {
             zp.setPassword(BaseConstants.getInstance().getZipPsw());
             zipFile.addStream(is, zp);
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace(); Printer.saveLogFile(e); ;
+            Printer.printLog(e);
         } catch (IOException e) {
-            e.printStackTrace(); Printer.saveLogFile(e); ;
+            Printer.printLog(e);
         } catch (ZipException e) {
-            e.printStackTrace(); Printer.saveLogFile(e); ;
+            Printer.printLog(e);
         }
     }
 

@@ -20,28 +20,23 @@ public class ReportFactory {
                 report = (Report)c.newInstance(prop,sqlExecutor);
                 report.addProperty("path", prop.getProperty("excel"));
             } catch (InstantiationException e) {
-                e.printStackTrace(); Printer.saveLogFile(e);
+                Printer.printLog(e);
             } catch (IllegalAccessException e) {
-                e.printStackTrace(); Printer.saveLogFile(e);
-                ;
+                Printer.printLog(e);
             } catch (ClassNotFoundException e) {
-                printRowToMonitor("Class not found!!! (report factory)");
-                e.printStackTrace(); Printer.saveLogFile(e);
-                ;
+                Printer.printLog("Class not found!!! (report factory)");
+                Printer.printLog(e);
             } catch (NoSuchMethodException e) {
-                e.printStackTrace(); Printer.saveLogFile(e);
-                ;
+                Printer.printLog(e);
             } catch (InvocationTargetException e) {
-                e.printStackTrace(); Printer.saveLogFile(e);
-                ;
+                Printer.printLog(e);
             }
 
         }
         else {
             report = new RegularMonitor(prop, sqlExecutor);
             report.addProperty("path", BaseConstants.getPath());
-        };
-        //report.setIntervalDate(prop.getProperty("date1"), prop.getProperty("date2"));
+        }
         return report;
     }
 }

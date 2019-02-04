@@ -33,9 +33,8 @@ public class Table {
                }
             resultSet.beforeFirst();
         }catch (SQLException e) {
-            e.printStackTrace(); Printer.saveLogFile(e);
-            ;
-        }
+            Printer.printLog(e);
+    }
     }
     public void transposeTable (){
         String [][]rotatedMatrix = new String [matrix[0].length][matrix.length];

@@ -173,7 +173,7 @@ public class ProccessesPanelTab extends JScrollPane implements Runnable{
 
                 sleep(1000);
             } catch (InterruptedException e) {
-                e.printStackTrace(); Printer.saveLogFile(e); ;
+                Printer.printLog(e);
             }
         }
     }

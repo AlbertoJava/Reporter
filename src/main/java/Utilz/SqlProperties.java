@@ -83,9 +83,9 @@ public class SqlProperties implements Comparable<SqlProperties>{
         try (InputStreamReader fileReader =new InputStreamReader(new FileInputStream(file),"utf-8")){
             return loadFromFile(fileReader,file.getPath());
         } catch (FileNotFoundException e) {
-            e.printStackTrace(); Printer.saveLogFile(e); ;
+            Printer.printLog(e);
         } catch (IOException e) {
-            e.printStackTrace(); Printer.saveLogFile(e); ;
+            Printer.printLog(e);
         }
         return null;
     }
@@ -108,7 +108,7 @@ public class SqlProperties implements Comparable<SqlProperties>{
     /*Print map collection*/
     public void printMap(){
         if (map == null || map.size()==0) {
-            printRowToMonitor("Empty PropMap");
+            Printer.printLog("Empty PropMap");
             return;
         }
         for (Map.Entry<String, String> pair:
@@ -212,7 +212,7 @@ public class SqlProperties implements Comparable<SqlProperties>{
 
     private boolean updatePropertiesFile(String nameProperty, String value){
         //найти в файле свойство и переписать его значение и перезагрузить
-        printRowToMonitor("FileName sourceFile " + sourceFile);
+        Printer.printLog(getProperty("description") + ", updatePropertiesFile. FileName sourceFile " + sourceFile);
         Path path = Paths.get(sourceFile);
         try {
             String contentOfFile = new String(Files.readAllBytes(path));
@@ -220,7 +220,7 @@ public class SqlProperties implements Comparable<SqlProperties>{
             Files.write(path,contentOfFile.getBytes());
             map=loadFromFile(path.toFile());
         } catch (IOException e) {
-            e.printStackTrace(); Printer.saveLogFile(e); ;
+            Printer.printLog(e);
         }
         return true;
     }
@@ -238,12 +238,11 @@ public class SqlProperties implements Comparable<SqlProperties>{
                 }
                 fHeader = zipFile.getFileHeader(sourceFile);
             } catch (ZipException e) {
-                e.printStackTrace();
-                Printer.saveLogFile(e);
+                Printer.printLog(e);
                 try {
                     wait(10000);
                 } catch (InterruptedException e1) {
-                    e1.printStackTrace();
+                    Printer.printLog(e1);
                 }
             }
             StringBuilder stringB = null;
@@ -255,11 +254,9 @@ public class SqlProperties implements Comparable<SqlProperties>{
                 stringB = getFileContextFromStream(isr);
                 zipFile.removeFile(fHeader);
             } catch (IOException e) {
-                e.printStackTrace();
-                Printer.saveLogFile(e);
+                Printer.printLog(e);
             } catch (ZipException e) {
-                e.printStackTrace();
-                Printer.saveLogFile(e);
+                Printer.printLog(e);
             }
             /*replace value in StringBuilder*/
             int start = stringB.indexOf(map.get(nameProperty));
@@ -278,14 +275,9 @@ public class SqlProperties implements Comparable<SqlProperties>{
                 zipFile.addStream(is, zp);
                 //map.put(nameProperty,value);
             } catch (IOException e) {
-                e.printStackTrace();
-                Printer.saveLogFile(e);
-
+                Printer.printLog(e);
             } catch (ZipException e) {
-                e.printStackTrace();
-                Printer.saveLogFile(e);
-
-            }
+                Printer.printLog(e);            }
         }
         return true;
     }
@@ -302,7 +294,7 @@ public class SqlProperties implements Comparable<SqlProperties>{
                 //stringB.append(" ");
             }
         } catch (IOException e) {
-            e.printStackTrace(); Printer.saveLogFile(e); ;
+            Printer.printLog(e);
         }
         return stringB;
     }

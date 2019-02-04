@@ -60,12 +60,11 @@ public abstract class AbstractExcelReport extends AbstractReport {
             File file = new File (getUniqFileName(s));
             try (FileOutputStream fos = new FileOutputStream(file)){
                 workbook.write(fos);
-                Printer.printRowToMonitor("File created " + s);
+                Printer.printLog("File created " + s);
 
             } catch (IOException e) {
-                e.printStackTrace(); Printer.saveLogFile(e);
-                ;
-                Printer.printRowToMonitor("Error when writing " + s+  " file!");
+                Printer.printLog(e);
+                Printer.printLog("Error when writing " + s+  " file!");
 
             }
         }
@@ -142,8 +141,7 @@ public abstract class AbstractExcelReport extends AbstractReport {
                 rownum++;
             }
         } catch (SQLException e) {
-            e.printStackTrace(); Printer.saveLogFile(e);
-            ;
+            Printer.printLog(e);
         }
     }
 

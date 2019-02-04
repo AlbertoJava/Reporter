@@ -51,8 +51,8 @@ public class SqlPropertiesTest {
         InputStreamReader isr = new InputStreamReader(new ByteArrayInputStream(sqlProp.getBytes()), Charset.forName("UTF-8"));
 
         result = sqlProperties.loadFromFile(isr, filePath);
-        System.out.println("startTime = " +sqlProperties.getStartTime().getTime());
-        System.out.println(sqlProperties.toCalendar(result.get("date2")+ " 23:59:59").getTime());
+        Printer.printLog("startTime = " +sqlProperties.getStartTime().getTime());
+        Printer.printLog(sqlProperties.toCalendar(result.get("date2")+ " 23:59:59").getTime().toString());
         assertEquals(result.get("date2"), "01/01/2019");
         assertEquals(result.get("sourceFile"),filePath);
         Calendar c1 =sqlProperties.toCalendar(result.get("date2")+ " 23:59:59");
@@ -60,8 +60,6 @@ public class SqlPropertiesTest {
         Calendar c2 = sqlProperties.getStartTime();
         c2.clear(Calendar.MILLISECOND);
         assertEquals(c1,c2);
-
-
     }
 
 }

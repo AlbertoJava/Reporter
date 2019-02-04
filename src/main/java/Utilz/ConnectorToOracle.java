@@ -39,7 +39,7 @@ public class ConnectorToOracle {
         if (num != null && num != 0 && !conections.get(server).isClosed()) {
             num++;
             counterConections.put(server, num);
-            printRowToMonitor("Count of connections for " + server + " is: " +counterConections.get(server));
+            Printer.printLog("Count of connections for " + server + " is: " +counterConections.get(server));
             return conections.get(server);
         }
         num=0;
@@ -49,11 +49,11 @@ public class ConnectorToOracle {
                         BaseConstants.getInstance().getConnectionString(server),
                         BaseConstants.getInstance().getLog(server),
                         BaseConstants.getInstance().getPsw(server));
-        printRowToMonitor("Connected Successfully to Oracle instance " + server);
+            Printer.printLog("Connected Successfully to Oracle instance " + server);
         conections.put(server, con);
         num++;
         counterConections.put(server, num);
-        printRowToMonitor("Count of connections for " + server + " is first: " +counterConections.get(server));
+            Printer.printLog("Count of connections for " + server + " is first: " +counterConections.get(server));
         return conections.get(server);
         }
     }
@@ -68,7 +68,7 @@ public class ConnectorToOracle {
             conections.get(server).close();
             return true;
         } catch (SQLException e) {
-            e.printStackTrace(); Printer.saveLogFile(e); ;
+            Printer.printLog(e);
             return false;
         }
     }

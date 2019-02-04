@@ -41,7 +41,7 @@ public class LicenseWindow extends JFrame {
         logginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                printRowToMonitor("Button clicked!!!");
+                Printer.printLog("Button in LicenseWindow clicked!!!");
                 if (Controller.checkKey(logginText.getText())){
                     saveKey(logginText.getText());
                     Controller.init(BaseConstants.isIsZip());
@@ -66,7 +66,7 @@ public class LicenseWindow extends JFrame {
                 zipFile.removeFile(fHeader);
 
             } catch (ZipException e) {
-                e.printStackTrace(); Printer.saveLogFile(e); ;
+                Printer.printLog(e);
             }
             try (InputStream is = new ByteArrayInputStream(text.getBytes("utf-8"))) {
                 ZipParameters zp = new ZipParameters();
@@ -75,11 +75,11 @@ public class LicenseWindow extends JFrame {
                 zp.setPassword(BaseConstants.getInstance().getZipPsw());
                 zipFile.addStream(is, zp);
             } catch (UnsupportedEncodingException e) {
-                e.printStackTrace(); Printer.saveLogFile(e); ;
+                Printer.printLog(e);
             } catch (IOException e) {
-                e.printStackTrace(); Printer.saveLogFile(e); ;
+                Printer.printLog(e);
             } catch (ZipException e) {
-                e.printStackTrace(); Printer.saveLogFile(e); ;
+                Printer.printLog(e);
             }
         }
         else{
@@ -87,9 +87,9 @@ public class LicenseWindow extends JFrame {
             {
                 bfw.write(text);
             } catch (FileNotFoundException e) {
-                e.printStackTrace(); Printer.saveLogFile(e); ;
+                Printer.printLog(e);
             } catch (IOException e) {
-                e.printStackTrace(); Printer.saveLogFile(e); ;
+                Printer.printLog(e);
             }
 
         }

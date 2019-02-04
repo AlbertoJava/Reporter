@@ -58,24 +58,30 @@ public  class Printer {
             }
 
             try (FileWriter fw = new FileWriter(path.toString(), true)) {
-
-                // fw.write("--------------- " + StringUtilz.toString(Calendar.getInstance()) + "\n\r--------------- ");
                 fw.write(text + "\r\n");
             } catch (IOException e) {
                 e.printStackTrace();
-
             }
             lock.notifyAll();
         }
     }
+    public synchronized static void printLog(String text){
+        saveLogFile(text);
+        System.out.println(text);
+    }
+    public synchronized static void printLog(Exception e){
+        saveLogFile(e);
+        e.printStackTrace();
+    }
+
 
     public  synchronized static void printRowToMonitor(String text){
         System.out.println(text);
-        saveLogFile(text);
+        //saveLogFile(text);
     }
     public synchronized static  void printLineToMonitor(String text){
         System.out.println(text);
-        saveLogFile(text);
+        //saveLogFile(text);
     }
 
     public synchronized static void saveResult(String description, StringBuilder result){
@@ -106,11 +112,6 @@ public  class Printer {
             header.append("--------------------------------");
             header.append(pair.getKey());
             header.append(' ');
-            System.out.println("test befor convert date tostring");
-            System.out.println(pair.getValue().getDateTime());
-          /*  DateFormat df=new SimpleDateFormat("dd.MM.yyyy");
-            String dateTime = df.format(pair.getValue().getDateTime());
-            System.out.println(dateTime);*/
             header.append(pair.getValue().getDateTime());
             header.append("-----------------------------------\r\n");
 

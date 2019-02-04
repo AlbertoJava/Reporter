@@ -41,7 +41,7 @@ public  class BaseConstants {
         try {
             startProps.load(new InputStreamReader(new FileInputStream(new File(startFile)), Charset.forName("UTF-8")));
         } catch (IOException e) {
-            e.printStackTrace(); Printer.saveLogFile(e); ;
+            Printer.printLog(e);
         }
         // String path, String pathSQL, String cat, String log, String psw
         path = startProps.getProperty("path");

@@ -64,7 +64,7 @@ public class View extends JDialog {
         dialog.pack();
         dialog.setVisible(true);
         //System.exit(0);
-        System.out.println("dsfsdf");
+
     }
 
 }

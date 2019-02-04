@@ -55,8 +55,7 @@ public class SqlExecutor extends Thread{
                         try {
                             lock.wait(period);
                            } catch (InterruptedException e) {
-                            e.printStackTrace(); Printer.saveLogFile(e);
-                            ;
+                            Printer.printLog(e);
                         }
                     }
 
@@ -77,7 +76,7 @@ public class SqlExecutor extends Thread{
             lock.notifyAll();
         }
         long period = abstractReport.getSleepingTime();
-        Printer.printRowToMonitor("Thread "+abstractReport.getProperty("description")+" sleep for " +
+        Printer.printLog("Thread "+abstractReport.getProperty("description")+" sleep for " +
                         String.valueOf(period / 1000 / 60 / 60 / 24) + " days "
                         + String.valueOf(period / 1000 / 60 / 60 % 24) + " hours "
                         + String.valueOf(period / 1000 / 60 % 60) + " min "

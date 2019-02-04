@@ -37,7 +37,7 @@ public abstract class AbstractReport implements Report,  Runnable {
                 stm.close();
                 ConnectorToOracle.getInstance().closeConnection(getProperty("server"));
             } catch (SQLException e) {
-                e.printStackTrace(); Printer.saveLogFile(e); ;
+                Printer.printLog(e);
             }
     }
 
@@ -52,15 +52,15 @@ public abstract class AbstractReport implements Report,  Runnable {
             e.printStackTrace(); Printer.saveLogFile(e); ;
         }
         catch (NullPointerException e){
-            e.printStackTrace(); Printer.saveLogFile(e); ;
+            Printer.printLog(e);
         }
         finally {
             if (resultSet==null ){
-                printRowToMonitor("Due to connection error thread "+ props.getProperty("description") + "  asleep for " +crashWaitingTime/(60*1000)+" min!");
+                Printer.printLog("Due to connection error thread "+ props.getProperty("description") + "  asleep for " +crashWaitingTime/(60*1000)+" min!");
                 try {
                     sleep(crashWaitingTime);
                 } catch (InterruptedException e) {
-                    e.printStackTrace(); Printer.saveLogFile(e); ;
+                    Printer.printLog(e);
                }
             }
         }
@@ -81,7 +81,7 @@ public abstract class AbstractReport implements Report,  Runnable {
             try {
                 sleep(crashWaitingTime);
             } catch (InterruptedException e) {
-                e.printStackTrace(); Printer.saveLogFile(e); ;
+                Printer.printLog(e);
             }
 
         }
@@ -89,10 +89,10 @@ public abstract class AbstractReport implements Report,  Runnable {
             try {
                 sleep(crashWaitingTime);
             } catch (InterruptedException e) {
-                e.printStackTrace(); Printer.saveLogFile(e);
+                Printer.printLog(e);
             }
         }
-        System.out.println("run finished for "  + getProps().getProperty("description"));
+        Printer.printLog("run finished for "  + getProps().getProperty("description"));
         sqlExecutor.addQueue(this);
     }
 

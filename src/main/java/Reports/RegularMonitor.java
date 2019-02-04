@@ -22,7 +22,7 @@ public  class RegularMonitor extends AbstractReport {
     public RegularMonitor(SqlProperties props, SqlExecutor sqlExecutor) {
         super(props, sqlExecutor);
         this.description = props.getProperty("description");
-        Printer.printRowToMonitor("Thread starting " + description + ", server: " + getProperty("server") + " (Constructor of RegularMonitor)");
+        Printer.printLog("Thread starting " + description + ", server: " + getProperty("server") + " (Constructor of RegularMonitor)");
     }
 
     @Override
@@ -34,7 +34,7 @@ public  class RegularMonitor extends AbstractReport {
 
         ResultSet result = executeSqlClause(getProperty("sql"));
         if (result == null) {
-            Printer.printRowToMonitor(description + " selection returns null " + sCurrentDateTime);
+            Printer.printLog(description + " selection returns null " + sCurrentDateTime);
             return false;
         }
 
@@ -56,8 +56,7 @@ public  class RegularMonitor extends AbstractReport {
         Printer.printLineToMonitor(resultSB.toString());
 
         } catch (SQLException e) {
-            e.printStackTrace(); Printer.saveLogFile(e);
-            ;
+            Printer.printLog(e);
             flag=false;
         }
         closeConnection(result);

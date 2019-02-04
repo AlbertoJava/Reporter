@@ -126,7 +126,7 @@ public class OktsOilReport extends AbstractExcelReport {
             }
             result.beforeFirst();
         } catch (SQLException e) {
-            e.printStackTrace(); Printer.saveLogFile(e); ;
+            Printer.printLog(e);
         }
 
         return rownum;

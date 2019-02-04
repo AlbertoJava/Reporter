@@ -63,7 +63,7 @@ private void test1 (){
     }
     printMap();
     initWorkingPool(false);
-    System.out.println("--------------------");
+    Printer.printLog("--------------------");
     printMap();
     SwingUtilities.invokeLater(new Runnable() {
         @Override
@@ -92,11 +92,11 @@ private void test1 (){
                 readFolderSql();
             }
         } catch (ZipException e) {
-            e.printStackTrace(); Printer.saveLogFile(e); ;
-            printRowToMonitor("File " + BaseConstants.getInstance().getZipFileSQL() + " generated I/O exception!");
+            Printer.printLog(e);
+            Printer.printLog("File " + BaseConstants.getInstance().getZipFileSQL() + " generated I/O exception!");
         } catch (IOException e) {
-            e.printStackTrace(); Printer.saveLogFile(e); ;
-            printRowToMonitor("Folder " + BaseConstants.getInstance().getPathSQL() + " generated I/O exception!");
+            Printer.printLog(e);
+            Printer.printLog("Folder " + BaseConstants.getInstance().getPathSQL() + " generated I/O exception!");
         }
     }
 

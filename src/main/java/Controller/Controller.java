@@ -22,9 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.*;
-
 import static Utilz.Printer.printRowToMonitor;
-import static java.lang.Thread.sleep;
 
 public class Controller {
 
@@ -89,11 +87,9 @@ public class Controller {
                     try (BufferedReader bf = new BufferedReader(new InputStreamReader(zipFile.getInputStream(fh), Charset.forName("UTF-8")))) {
                         return checkKey(bf.readLine());
                     } catch (IOException e) {
-                        e.printStackTrace(); Printer.saveLogFile(e); ;
-                        ;
+                        Printer.printLog(e);
                     } catch (ZipException e) {
-                        e.printStackTrace(); Printer.saveLogFile(e); ;
-                        ;
+                        Printer.printLog(e);
                     }
                 }
             }
@@ -102,13 +98,12 @@ public class Controller {
            try (BufferedReader bf = new BufferedReader(new InputStreamReader(new FileInputStream(BaseConstants.getLiesencePath()),Charset.forName("UTF-8"))))
            {return checkKey(bf.readLine());
            } catch (FileNotFoundException e) {
-               e.printStackTrace(); Printer.saveLogFile(e);
+               Printer.printLog(e);
            } catch (IOException e) {
-               e.printStackTrace(); Printer.saveLogFile(e);
+               Printer.printLog(e);
            }
-
         }
-            return false;
+         return false;
     }
 
     private static Calendar stringToCalendar(String s) {
@@ -129,13 +124,11 @@ public class Controller {
                 readFolderSql();
             }
         } catch (ZipException e) {
-            e.printStackTrace(); Printer.saveLogFile(e); ;
-            ;
-            printRowToMonitor("File " + BaseConstants.getInstance().getZipFileSQL() + " generated I/O exception!");
+            Printer.printLog(e);
+            Printer.printLog("File " + BaseConstants.getInstance().getZipFileSQL() + " generated I/O exception!");
         } catch (IOException e) {
-            e.printStackTrace(); Printer.saveLogFile(e); ;
-            ;
-            printRowToMonitor("Folder " + BaseConstants.getInstance().getPathSQL() + " generated I/O exception!");
+            Printer.printLog(e);
+            Printer.printLog("Folder " + BaseConstants.getInstance().getPathSQL() + " generated I/O exception!");
         }
     }
 
@@ -163,7 +156,7 @@ public class Controller {
         }
         List<FileHeader> headers = zipFile.getFileHeaders();
         for (FileHeader fh : headers) {
-            printRowToMonitor("Entry: " + fh.getFileName());
+            Printer.printLog("Entry: " + fh.getFileName());
             if (!fh.isDirectory() && fh.getFileName().endsWith(".rep")) {
                 SqlProperties prop = new SqlProperties(true);
                 prop.loadFromFile(new InputStreamReader(zipFile.getInputStream(fh),Charset.forName("UTF-8")), fh.getFileName());
@@ -174,7 +167,7 @@ public class Controller {
 
     public static void createSqlExecuter() {
         if (tasksQueue.size() > 0) {
-            printRowToMonitor(String.valueOf(tasksQueue.size()));
+            Printer.printLog(String.valueOf(tasksQueue.size()));
             sqlExecutor = new SqlExecutor(tasksQueue);
             sqlExecutor.run();
         }
@@ -226,7 +219,7 @@ public class Controller {
                         conn.close();
                         break;
                     } catch (SQLException e) {
-                        e.printStackTrace(); Printer.saveLogFile(e);
+                        Printer.printLog(e);
                     }
 
                 }
@@ -277,12 +270,11 @@ public class Controller {
             SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
             try {
                 cal.setTime(sdf.parse(sDate));
-                printRowToMonitor("Oracle date " + sDate);
+                Printer.printLog("Oracle date " + sDate);
                 return cal;
             } catch (ParseException e) {
-                e.printStackTrace(); Printer.saveLogFile(e); ;
-                ;
-            }
+                Printer.saveLogFile(e);
+                }
         }
         return Calendar.getInstance();
 
