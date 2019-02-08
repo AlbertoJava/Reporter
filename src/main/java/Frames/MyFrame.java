@@ -9,13 +9,9 @@ import java.util.Map;
 
 
 public class MyFrame extends JFrame {
-    private DetailsPanel detailsPanel;
     private ProccessesPanelTab proccessesPanel;
-    private TestPanel testPanel;
     private ResultView resultView = new ResultView();
     private JTextArea description = new JTextArea();
-    //private JTextArea textArea = new JTextArea();
-
 
     public   MyFrame (String title, Map<SqlProperties,Boolean> statusMap){
         super(title);

@@ -67,14 +67,6 @@ public abstract class AbstractReport implements Report,  Runnable {
         return resultSet;
     }
 
-    private boolean prepareCreation(){
-        if (createReport()) {
-         return   getProps().updatePeriodinFile();
-        }
-        return false;
-    }
-
-
     @Override
     public void run() {
         while (!createReport()){

@@ -1,5 +1,7 @@
-package Frames;
+package Test;
 
+import Frames.MyFrame;
+import Frames.StartUpWindow;
 import Utilz.BaseConstants;
 import Utilz.Printer;
 import Utilz.SqlProperties;
@@ -33,7 +35,7 @@ public class View1 {
 
     public static void main(String[] args){
 
-      JFrame frame0= new StartUpWindow();
+      JFrame frame0= new StartUpWindow("");
       frame0.setVisible(true);
 
      /* JFrame frame= new JFrame ("FRAME");

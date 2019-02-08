@@ -35,10 +35,7 @@ public class ProccessesPanelTab extends JScrollPane implements Runnable{
     public void init (PriorityBlockingQueue<SqlProperties>  queue) {
 
         while (queue==null){
-            //throw new NullPointerException("ProccessPanel.setStatusMap get null parameter");
-        }
-
-        //this.statusMap = (LinkedHashMap<SqlProperties, Boolean>) statusMap;
+          }
 
         this.queue=queue;
         taskList = queue.stream().collect(Collectors.toList());
@@ -143,28 +140,6 @@ public class ProccessesPanelTab extends JScrollPane implements Runnable{
     public void run() {
         while (true) {
             try {
-                /*
-                for (int i = 0; i < ptm.getRowCount(); i++) {
-                    String key = (String) ptm.getValueAt(i, 0);
-                    SqlProperties keyObject = statusMap.keySet()
-                            .stream()
-                            .filter(s -> s.getProperty("description").equals(key))
-                            .findFirst()
-                            .get();
-
-                    String status= statusMap.get(key)?"running":"asleep";
-                    if (!ptm.getValueAt(i, 1).equals(status)) {
-                        ptm.setValueAt(status, i, 1);
-                    }
-
-                    if (!ptm.getValueAt(i, 2).equals(keyObject.getProperty("timeStampLastExecution"))) {
-                        ptm.setValueAt(keyObject.getProperty("timeStampLastExecution"), i, 2);
-                    }
-                    if (!ptm.getValueAt(i, 3).equals(ms_totime (Long.valueOf(keyObject.calcSleepingTime())))) {
-                        ptm.setValueAt(ms_totime (Long.valueOf(keyObject.calcSleepingTime())), i, 3);
-                    }
-                    ((AbstractTableModel)proccessesTable.getModel()).fireTableRowsUpdated(i,i);
-                }*/
                 int row = proccessesTable.getSelectedRow();
                 ptm.fireTableDataChanged();
                 if (row!=-1)proccessesTable.setRowSelectionInterval(row,row);
@@ -194,13 +169,7 @@ public class ProccessesPanelTab extends JScrollPane implements Runnable{
 
         @Override
         public synchronized Object getValueAt(int rowIndex, int columnIndex) {
-
-            //Iterator<SqlProperties> itr = queue.iterator();
-            /*Iterator<Map.Entry<SqlProperties,Boolean>> itr = statusMap.entrySet().iterator();
-
-            Map.Entry<SqlProperties,Boolean> entry=null;*/
-            SqlProperties entry=taskList.get(rowIndex);
-            //int i=0;
+           SqlProperties entry=taskList.get(rowIndex);
 
            String result=null;
            switch (columnIndex){

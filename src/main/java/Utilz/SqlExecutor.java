@@ -18,13 +18,13 @@ public class SqlExecutor extends Thread{
     private static PriorityBlockingQueue<SqlProperties> waitingQueue;
     private final Object lock = new Object();
 
-    ExecutorService service = Executors.newFixedThreadPool(BaseConstants.MAX_COUNT_THREADS);
+    //ExecutorService service = Executors.newFixedThreadPool(BaseConstants.MAX_COUNT_THREADS);
     HashMap<String,ExecutorService> services = new HashMap<>();
     //private Map<SqlProperties,Boolean> workingPool=new LinkedHashMap<>();
 
 
     public SqlExecutor(PriorityBlockingQueue<SqlProperties> queue) {
-        this.waitingQueue=queue;
+        SqlExecutor.waitingQueue=queue;
       /*  for (SqlProperties prop:waitingQueue) {
   //       workingPool.put(prop,false);
        *//*  prop.addProperty("timeStampLastExecution", getCurrentDateTime());
@@ -92,10 +92,5 @@ public class SqlExecutor extends Thread{
     public static PriorityBlockingQueue<SqlProperties> getWaitingQueue() {
         return waitingQueue;
     }
-
-    /*public Map<SqlProperties, Boolean> getWorkingPool() {
-        return workingPool;
-    }*/
-
 
 }

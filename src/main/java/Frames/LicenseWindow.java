@@ -14,8 +14,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 
-import static Utilz.Printer.printRowToMonitor;
-
 public class LicenseWindow extends JFrame {
     private JLabel textLabel = new JLabel("<html>The period of use of the software has expired. Enter the new key.<br>Contact e-mail: albtutanota@tutanota.com<html>");
     private JLabel logginLabel = new JLabel(" Please, enter here new  key: ");

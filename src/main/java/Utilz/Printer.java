@@ -7,8 +7,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -31,7 +29,7 @@ public  class Printer {
                 }
             }
             File file = new File (getLogFile());
-            try (PrintWriter pw = new PrintWriter(new FileWriter(file,true), true);) {
+            try (PrintWriter pw = new PrintWriter(new FileWriter(file,true), true)) {
                 e.printStackTrace(pw);
             } catch (IOException e1) {
                 e1.printStackTrace();
@@ -99,7 +97,7 @@ public  class Printer {
             try {
                 Files.createFile(path);
             } catch (IOException e) {
-                e.printStackTrace(); ;
+                e.printStackTrace();
                 return false;
             }
         }
@@ -139,14 +137,14 @@ public  class Printer {
                         (sb.toString()).getBytes("windows-1251"),
                          StandardOpenOption.TRUNCATE_EXISTING);
         } catch (IOException e) {
-            e.printStackTrace(); ;
+            e.printStackTrace();
             return false;
         }
         return true;
     }
 
     public static List<StringBuilder> getResults(String description) {
-        List<StringBuilder> temp = new ArrayList<StringBuilder>();
+        List<StringBuilder> temp = new ArrayList<>();
         if (results==null||results.get(description)==null) {
             temp.add(new StringBuilder());
             temp.add(new StringBuilder());

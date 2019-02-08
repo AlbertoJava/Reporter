@@ -1,17 +1,14 @@
 package Utilz;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.util.*;
 
 public  class BaseConstants {
     /*Initinalizating parameters*/
-    private final static String startFile = "c:\\Java\\monitor.ini";
+    public final static String startFile = "c:\\Java\\monitor.ini";
     private  static String path = "C:\\Java\\";
-    private  String pathSQL = "C:\\Java\\SQL\\";
+    private  String pathSQL ;
     private  String zipFileSQL = "C:\\Java\\SQL.zip";
     private String localExcelReportPath = "C:\\RegularReports\\";
     private static String liesencePath="C:\\Java\\SQL\\liesence.txt";
@@ -32,17 +29,14 @@ public  class BaseConstants {
         return dbase;
     }
 
-    private static Map<String,DBConnection> dbase = new HashMap<String, DBConnection>();
+    private static Map<String,DBConnection> dbase = new HashMap<>();
     private static BaseConstants baseConstants = null;
     private static boolean isZip =false;
 
-    private BaseConstants() {
+    private BaseConstants() throws IOException {
         Properties startProps = new Properties();
-        try {
-            startProps.load(new InputStreamReader(new FileInputStream(new File(startFile)), Charset.forName("UTF-8")));
-        } catch (IOException e) {
-            Printer.printLog(e);
-        }
+        startProps.load(new InputStreamReader(new FileInputStream(new File(startFile)), Charset.forName("UTF-8")));
+
         // String path, String pathSQL, String cat, String log, String psw
         path = startProps.getProperty("path");
         pathSQL = startProps.getProperty("pathSQL");
@@ -57,7 +51,6 @@ public  class BaseConstants {
         List<String> keys = new ArrayList(startProps.keySet());
         for (String key:keys ) {
             if (key.startsWith("BD_")){
-
                 String [] arr  = String.valueOf(startProps.get(key)).split("_");
                 dbase.put (key.substring(3),
                         new DBConnection(arr[0],arr[1],arr[2])
@@ -68,7 +61,14 @@ public  class BaseConstants {
     }
 
     public static synchronized BaseConstants getInstance(){
-        if (baseConstants ==null) baseConstants =new BaseConstants();
+        if (baseConstants ==null) {
+            try {
+                baseConstants =new BaseConstants();
+            } catch (IOException e) {
+                Printer.printLog(e);
+                return null;
+            }
+        }
         return baseConstants;
     }
 

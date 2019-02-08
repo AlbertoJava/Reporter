@@ -1,70 +1,26 @@
 package Frames;
 
-import Controller.Controller;
-import Utilz.BaseConstants;
-import Utilz.Printer;
-import net.lingala.zip4j.core.ZipFile;
-import net.lingala.zip4j.exception.ZipException;
-import net.lingala.zip4j.model.FileHeader;
-import net.lingala.zip4j.model.ZipParameters;
+
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 
 public class StartUpWindow extends JFrame {
-    private JLabel textLabel = new JLabel("Please wait some minutes...");
-    private JLabel logginLabel = new JLabel(" Please, enter here new  key: ");
-    private JTextField logginText = new JTextField(60);
-    private JButton logginButton   = new JButton("Enter key");
+    private JLabel textLabel = new JLabel();
 
 
 
-
-    public StartUpWindow() throws HeadlessException {
+    public StartUpWindow(String message) throws HeadlessException {
         super ("Start up window");
         setSize(new Dimension(400,150));
         setLayout(new BorderLayout());
         Container c= getContentPane();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        textLabel.setText(message);
         c.add(textLabel,BorderLayout.NORTH);
-
-
     }
-
-    private void saveKey(String text) {
-        String zipFilePath = BaseConstants.getInstance().getZipFileSQL();
-        FileHeader fHeader=null;
-        ZipFile zipFile =null;
-        try {
-            zipFile=new ZipFile(zipFilePath);
-            if (zipFile.isEncrypted()){
-                zipFile.setPassword(BaseConstants.getInstance().getZipPsw());
-            }
-            fHeader =zipFile.getFileHeader(BaseConstants.getLiesencePath());
-            zipFile.removeFile(fHeader);
-
-        } catch (ZipException e) {
-            Printer.printLog(e);
-        }
-        try (InputStream is = new ByteArrayInputStream(text.getBytes("utf-8"))) {
-            ZipParameters zp = new ZipParameters();
-            zp.setSourceExternalStream(true);
-            zp.setFileNameInZip(fHeader.getFileName());
-            zp.setPassword(BaseConstants.getInstance().getZipPsw());
-            zipFile.addStream(is, zp);
-        } catch (UnsupportedEncodingException e) {
-            Printer.printLog(e);
-        } catch (IOException e) {
-            Printer.printLog(e);
-        } catch (ZipException e) {
-            Printer.printLog(e);
-        }
+    public void setMessage (String message){
+        textLabel.setText(message);
     }
 
 
