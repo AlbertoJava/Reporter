@@ -43,6 +43,8 @@ public class MyFrame extends JFrame {
             JSplitPane jSplitPaneInternal = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true);
             jSplitPaneInternal.setTopComponent(resultView);
             description.setLineWrap(true);
+            description.setWrapStyleWord(true);
+            description.setEditable(false);
             description.setPreferredSize(new Dimension(300,100));
             JScrollPane jsc = new JScrollPane();
             jsc.setViewportView(description);

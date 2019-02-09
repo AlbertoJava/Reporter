@@ -22,8 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.*;
-import static Utilz.Printer.printRowToMonitor;
-import static java.lang.Thread.sleep;
+
 
 public class Controller {
 
@@ -42,7 +41,7 @@ public class Controller {
             startFrame.setMessage("File " + BaseConstants.startFile + " not found!" );
             return;
         }
-        startFrame.setMessage("monitor.ini is handled properly. Please wait some minutes for initialization...");
+        startFrame.setMessage("monitor.ini handled properly. Please wait some minutes for initialization...");
         if (!checkLisence(BaseConstants.isIsZip())) {
             startFrame.dispose();
             new LicenseWindow();
@@ -51,7 +50,7 @@ public class Controller {
            SwingUtilities.invokeLater(new Runnable() {
                @Override
                public void run() {
-                   init(BaseConstants.getInstance().isIsZip());
+                   init(BaseConstants.isIsZip());
                }
            });
 
@@ -65,7 +64,7 @@ public class Controller {
         frame = new MyFrame("Monitoring - analyzing. Useful edition.", null);
         frame.setPreferredSize(new Dimension(1000, 500));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.getProccessesPanel().init(sqlExecutor.getWaitingQueue());
+        frame.getProccessesPanel().init(SqlExecutor.getWaitingQueue());
         frame.pack();
         frame.setVisible(true);
 
@@ -90,9 +89,10 @@ public class Controller {
                     BaseConstants.setLiesencePath(fh.getFileName());
                     try (BufferedReader bf = new BufferedReader(new InputStreamReader(zipFile.getInputStream(fh), Charset.forName("UTF-8")))) {
                         return checkKey(bf.readLine());
-                    } catch (IOException e) {
-                        Printer.printLog(e);
                     } catch (ZipException e) {
+                        Printer.printLog(e);
+                    }
+                    catch (IOException e) {
                         Printer.printLog(e);
                     }
                 }
@@ -193,11 +193,7 @@ public class Controller {
             e.printStackTrace();
         }
 
-        if (c.getTimeInMillis() - currentDate >= 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return c.getTimeInMillis() - currentDate >= 0;
     }
 
     private static Calendar getCurrentDate() throws InterruptedException,  ExecutionException {
