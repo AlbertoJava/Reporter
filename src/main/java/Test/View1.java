@@ -1,5 +1,6 @@
 package Test;
 
+import Controller.Controller;
 import Frames.MyFrame;
 import Frames.StartUpWindow;
 import Utilz.BaseConstants;
@@ -87,19 +88,7 @@ private void test1 (){
 }
 
     private static void initWorkingPool(boolean isEncrypted){
-        try {
-            if (isEncrypted) {
-                readZipFile();
-            } else {
-                readFolderSql();
-            }
-        } catch (ZipException e) {
-            Printer.printLog(e);
-            Printer.printLog("File " + BaseConstants.getInstance().getZipFileSQL() + " generated I/O exception!");
-        } catch (IOException e) {
-            Printer.printLog(e);
-            Printer.printLog("Folder " + BaseConstants.getInstance().getPathSQL() + " generated I/O exception!");
-        }
+        Controller.init(isEncrypted);
     }
 
     private static void readFolderSql() throws IOException {

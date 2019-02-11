@@ -83,7 +83,13 @@ public  class Printer {
     }
 
     public synchronized static void saveResult(String description, StringBuilder result){
-        if (result==null || description==null) return;
+        if (result==null || description==null) {
+            return;
+        }
+        /*optimizating section*/
+        else if (results.get(description)!=null&&results.get(description).getResult().equals(result)){
+            return;
+        }
         results.put(description,new ResultTable(result, new GregorianCalendar()));
         saveMaptoFile();
     }
