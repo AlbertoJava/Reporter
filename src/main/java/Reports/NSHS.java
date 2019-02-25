@@ -63,7 +63,7 @@ public class NSHS extends AbstractExcelReport {
                 0,
                 3
         ));
-        cell_header.setCellValue("Отчетный период: с " + startDate + " по " + finishDate+".");
+        cell_header.setCellValue("Отчетный период: с " + getProperty("date1") + " по " + getProperty("date2")+".");
 
         Row row=worksheet.createRow(1);
          /*Creating of header*/

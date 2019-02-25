@@ -136,7 +136,7 @@ public class IssueSpeed extends AbstractExcelReport {
                 0,
                 17
         ));
-        cell_header6.setCellValue("Отчет о сроках принятия решений о выпуске/отказе в выпуске товаров с " +startDate+" по " + finishDate+".");
+        cell_header6.setCellValue("Отчет о сроках принятия решений о выпуске/отказе в выпуске товаров с " +getProperty("date1")+" по " + getProperty("date2")+".");
         style2.cloneStyleFrom(style);
         style2.setRotation((short) 0);
         cell_header6.setCellStyle(style2);

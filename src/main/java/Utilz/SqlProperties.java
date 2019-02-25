@@ -169,11 +169,11 @@ public class SqlProperties implements Comparable<SqlProperties>{
         startTime=toCalendar(StringUtilz.toString(date2)+ " 23:59:59");
         if (isZip) {
 
-            boolean r= updatePropertiesZipFile("date2", StringUtilz.toString(date2)) | updatePropertiesZipFile("date1", StringUtilz.toString(date1));
+            boolean r= updatePropertiesZipFile("date2", StringUtilz.toString(date2)) & updatePropertiesZipFile("date1", StringUtilz.toString(date1));
             return r;
         }
         else{
-            boolean r= updatePropertiesFile("date2", StringUtilz.toString(date2)) | updatePropertiesFile("date1", StringUtilz.toString(date1));
+            boolean r= updatePropertiesFile("date2", StringUtilz.toString(date2)) & updatePropertiesFile("date1", StringUtilz.toString(date1));
             return r;
         }
     }
