@@ -22,7 +22,7 @@ import javax.crypto.SecretKey;
 public class StringCrypter {
     public static void main(String[] args) {
         StringCrypter crypter=new StringCrypter(new byte[]{1,4,5,6,8,9,7,8});
-        String testStr = "01/03/2019";
+        String testStr = "01/05/2019";
         // шифрование
         System.out.println( crypter.encrypt(testStr));
         System.out.println(crypter.decrypt(crypter.encrypt(testStr)));
