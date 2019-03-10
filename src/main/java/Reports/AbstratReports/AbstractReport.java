@@ -49,7 +49,8 @@ public abstract class AbstractReport implements Report,  Runnable {
             stm.execute(sqlClause);
             resultSet = stm.getResultSet();
         } catch (SQLException e) {
-            e.printStackTrace(); Printer.saveLogFile(e); ;
+            e.printStackTrace();
+            Printer.saveLogFile(e); ;
         }
         catch (NullPointerException e){
             Printer.printLog(e);

@@ -104,6 +104,7 @@ public class AutoRegistration extends AbstractExcelReport {
         style.setRotation((short) 90);
 
         createHeader(headerXLS,worksheet,style,1);
+
         insertData(result,worksheet,2);
         flag=createFile(workbook);
         return  flag;

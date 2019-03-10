@@ -22,7 +22,7 @@ public  class BaseConstants {
         BaseConstants.liesencePath = liesencePath;
     }
 
-    private String zipPsw = "123";
+    private String zipPsw = "albmonitor";
     public final static int MAX_COUNT_THREADS=5;
 
     public static Map<String, DBConnection> getDbase() {

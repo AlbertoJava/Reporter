@@ -39,6 +39,9 @@ public abstract class AbstractExcelReport extends AbstractReport {
     @Override
     public boolean createReport() {
         resultSet=executeSqlClause(getProperty("sql"));
+        if (resultSet==null){
+            return false;
+        }
         if (createReport(resultSet)){
             StringBuilder resultSB = new StringBuilder();
             resultSB.append("Report paths:" + "\r\n");
