@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.concurrent.PriorityBlockingQueue;
 
 import static java.lang.Thread.sleep;
+import static javax.swing.JOptionPane.showMessageDialog;
 
 public class Controller {
 
@@ -37,15 +38,25 @@ public class Controller {
 
 
     static public void main(String[] args) {
-        if (!checkLisence(true)) {
-            new LogginWindow();
-        } else {
-            init();
+        try {
+            if (!checkLisence(true)) {
+                new LogginWindow();
+            } else {
+                init();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            showMessageDialog(null, "Error occured:  " + e.getMessage(), "Error message", JOptionPane.OK_OPTION);
         }
     }
 
     public static void init() {
-        initWorkingPool(BaseConstants.getInstance().isIsZip());
+        try {
+            initWorkingPool(BaseConstants.getInstance().isIsZip());
+        } catch (IOException e) {
+            e.printStackTrace();
+            showMessageDialog(null, "Error occured:  " + e.getMessage(), "Error message", JOptionPane.OK_OPTION);
+        }
         new Thread(() -> createThreads()).start();
 
         frame = new MyFrame("Hello world of SWING!", null);
@@ -65,7 +76,7 @@ public class Controller {
 
     }
 
-    private static boolean checkLisence(boolean b) {
+    private static boolean checkLisence(boolean b) throws IOException {
         if (b) {
             String zipFilePath = BaseConstants.getInstance().getZipFileSQL();
             ZipFile zipFile = null;
@@ -78,6 +89,7 @@ public class Controller {
                 }
             } catch (ZipException e) {
                 e.printStackTrace();
+                showMessageDialog(null, "Error occured:  " + e.getMessage(), "Error message", JOptionPane.OK_OPTION);
             }
             for (FileHeader fh : headers) {
                 if (!fh.isDirectory() && fh.getFileName().equals("liesence.txt")) {
@@ -85,9 +97,12 @@ public class Controller {
                         return checkKey(bf.readLine());
                     } catch (IOException e) {
                         e.printStackTrace();
+                        showMessageDialog(null, "Error occured:  " + e.getMessage(), "Error message", JOptionPane.OK_OPTION);
                     } catch (ZipException e) {
                         e.printStackTrace();
+                        showMessageDialog(null, "Error occured:  " + e.getMessage(), "Error message", JOptionPane.OK_OPTION);
                     }
+
                 }
             }
             return false;
@@ -105,7 +120,7 @@ public class Controller {
         return new GregorianCalendar(yyyy, mm, dd);
     }
 
-    private static void initWorkingPool(boolean isEncrypted) {
+    private static void initWorkingPool(boolean isEncrypted) throws IOException {
         try {
             if (isEncrypted) {
                 readZipFile();
@@ -124,7 +139,7 @@ public class Controller {
     private static void readFolderSql() throws IOException {
         SimpleFileVisitor<Path> visitor = new SimpleFileVisitor<Path>() {
             @Override
-            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
                 if (file.toString().endsWith(".rep")) {
                     SqlProperties prop = new SqlProperties(false);
                     prop.loadFromFile(file.toFile());
@@ -136,7 +151,7 @@ public class Controller {
         Files.walkFileTree(Paths.get(BaseConstants.getInstance().getPathSQL()), visitor);
     }
 
-    private static void readZipFile() throws ZipException {
+    private static void readZipFile() throws ZipException, IOException {
         String zipFilePath = BaseConstants.getInstance().getZipFileSQL();
         ZipFile zipFile = new ZipFile(zipFilePath);
         if (zipFile.isEncrypted()) {

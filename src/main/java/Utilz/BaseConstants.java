@@ -1,11 +1,15 @@
 package Utilz;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+
+import static javax.swing.JOptionPane.showMessageDialog;
 
 public class BaseConstants {
     /*Initinalizating parameters*/
@@ -19,11 +23,12 @@ public class BaseConstants {
     private String localExcelReportPath = "C:\\RegularReports\\";
     private String zipPsw = "123";
 
-    private BaseConstants() {
+    private BaseConstants()  {
         Properties startProps = new Properties();
         try {
             startProps.load(new FileInputStream(new File(startFile)));
         } catch (IOException e) {
+            showMessageDialog(null, "Error occured:  " + e.getMessage(), "Error message", JOptionPane.OK_OPTION);
             e.printStackTrace();
         }
         // String path, String pathSQL, String cat, String log, String psw
@@ -41,7 +46,7 @@ public class BaseConstants {
         return dbase;
     }
 
-    public static synchronized BaseConstants getInstance() {
+    public static synchronized BaseConstants getInstance()  {
         if (baseConstants == null) baseConstants = new BaseConstants();
         return baseConstants;
     }

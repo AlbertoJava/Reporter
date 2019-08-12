@@ -209,7 +209,8 @@ public class SqlProperties implements Comparable {
 
     private boolean updatePropertiesZipFile(String nameProperty, String value) {
         /*read source in zip file to StringBuilder*/
-        String zipFilePath = BaseConstants.getInstance().getZipFileSQL();
+        String zipFilePath = null;
+        zipFilePath = BaseConstants.getInstance().getZipFileSQL();
         FileHeader fHeader = null;
         ZipFile zipFile = null;
         try {
