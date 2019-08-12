@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OktsCat extends AbstractExcelReport {
-    Table t=null;
+    Table t = null;
 
     public OktsCat(SqlProperties props, SqlExecutor sqlExecutor) {
         super(props, sqlExecutor);
@@ -23,10 +23,10 @@ public class OktsCat extends AbstractExcelReport {
 
     @Override
     public boolean createReport(ResultSet result) {
-        boolean flag =false;
-        t= new Table (result);
+        boolean flag = false;
+        t = new Table(result);
         t.transposeTable();
-       // t.printMatrix();
+        // t.printMatrix();
         List<String> headerRowXLS = new ArrayList();
         headerRowXLS.add("??????????");
         headerRowXLS.add("??????? ??????");
@@ -48,43 +48,42 @@ public class OktsCat extends AbstractExcelReport {
         headerColumnXLS.add("- ?? ??????????? ???????? ??????? (???. ???.)");
         headerColumnXLS.add("- ?? ??????????? ???.  ???????? ? ????????????  ????? (???. ???.)");
 
-        HSSFWorkbook workbook =new HSSFWorkbook();
-        HSSFSheet worksheet =workbook.createSheet("WeekReport");
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFSheet worksheet = workbook.createSheet("WeekReport");
 
-        worksheet.setColumnWidth(0,40*256);
-        worksheet.setColumnWidth(1,30*256);
-        worksheet.setColumnWidth(2,30*256);
-        worksheet.setColumnWidth(3,20*256);
-        worksheet.setColumnWidth(4,20*256);
+        worksheet.setColumnWidth(0, 40 * 256);
+        worksheet.setColumnWidth(1, 30 * 256);
+        worksheet.setColumnWidth(2, 30 * 256);
+        worksheet.setColumnWidth(3, 20 * 256);
+        worksheet.setColumnWidth(4, 20 * 256);
 
 
         HSSFCellStyle style = workbook.createCellStyle();
 
         style.setWrapText(true);
-        style.setAlignment        (HorizontalAlignment.CENTER);
+        style.setAlignment(HorizontalAlignment.CENTER);
         style.setVerticalAlignment(VerticalAlignment.CENTER);
         HSSFFont fontHeader = workbook.createFont();
         fontHeader.setFontName("Times New Roman");
-        fontHeader.setFontHeightInPoints((short)12);
-        fontHeader.setBold (true);
+        fontHeader.setFontHeightInPoints((short) 12);
+        fontHeader.setBold(true);
         style.setFont(fontHeader);
 
-        createHeader(headerRowXLS,worksheet,style,0,0);
-        createVerticalHeader (headerColumnXLS, style,worksheet, 1,0 );
-        String[][] m =new String[t.getMatrix().length-1][t.getMatrix()[0].length];
-        for (int i=1;i<t.getMatrix().length;i++){
-            for (int j=0;j<t.getMatrix()[0].length;j++){
-                m[i-1][j]=t.getMatrix()[i][j];
+        createHeader(headerRowXLS, worksheet, style, 0, 0);
+        createVerticalHeader(headerColumnXLS, style, worksheet, 1, 0);
+        String[][] m = new String[t.getMatrix().length - 1][t.getMatrix()[0].length];
+        for (int i = 1; i < t.getMatrix().length; i++) {
+            for (int j = 0; j < t.getMatrix()[0].length; j++) {
+                m[i - 1][j] = t.getMatrix()[i][j];
             }
         }
-        insertData(m/*t.getMatrix()*/,worksheet,1,1);
-        flag=createFile(workbook);
+        insertData(m/*t.getMatrix()*/, worksheet, 1, 1);
+        flag = createFile(workbook);
 
         return flag;
 
 
     }
-
 
 
 }

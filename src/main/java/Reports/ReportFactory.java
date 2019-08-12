@@ -9,12 +9,12 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 public class ReportFactory {
-    public static Report create (SqlProperties prop, SqlExecutor sqlExecutor)  {
-        Report report=null;
-        if (prop.getProperty("excel")!=null) {
+    public static Report create(SqlProperties prop, SqlExecutor sqlExecutor) {
+        Report report = null;
+        if (prop.getProperty("excel") != null) {
             try {
-                Constructor c =Class.forName("Reports." + prop.getProperty("description").trim()).getConstructor(SqlProperties.class, SqlExecutor.class);
-                report = (Report)c.newInstance(prop,sqlExecutor);
+                Constructor c = Class.forName("Reports." + prop.getProperty("description").trim()).getConstructor(SqlProperties.class, SqlExecutor.class);
+                report = (Report) c.newInstance(prop, sqlExecutor);
                 report.addProperty("path", prop.getProperty("excel"));
             } catch (InstantiationException e) {
                 e.printStackTrace();
@@ -28,11 +28,11 @@ public class ReportFactory {
             } catch (InvocationTargetException e) {
                 e.printStackTrace();
             }
-        }
-        else {
+        } else {
             report = new RegularMonitor(prop, sqlExecutor);
             report.addProperty("path", BaseConstants.getPath());
-        };
+        }
+        ;
         //report.setIntervalDate(prop.getProperty("date1"), prop.getProperty("date2"));
         return report;
     }

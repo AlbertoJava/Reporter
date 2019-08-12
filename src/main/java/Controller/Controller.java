@@ -1,15 +1,17 @@
 package Controller;
 
+import Frames.LogginWindow;
+import Frames.MyFrame;
 import Utilz.*;
-import Frames.*;
-
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import net.lingala.zip4j.model.FileHeader;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.sql.Connection;
@@ -18,8 +20,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.PriorityBlockingQueue;
 
 import static java.lang.Thread.sleep;
@@ -134,7 +138,6 @@ public class Controller {
 
     private static void readZipFile() throws ZipException {
         String zipFilePath = BaseConstants.getInstance().getZipFileSQL();
-        // zipFilePath="C:\\Java\\18.3.2018.zip";
         ZipFile zipFile = new ZipFile(zipFilePath);
         if (zipFile.isEncrypted()) {
             zipFile.setPassword(BaseConstants.getInstance().getZipPsw());
@@ -176,7 +179,7 @@ public class Controller {
         for (Map.Entry<String, BaseConstants.DBConnection> pair :
                 BaseConstants.getDbase().entrySet()) {
             Connection conn = ConnectorToOracle.getInstance().getConnection(pair.getKey());
-            if (conn==null) continue;
+            if (conn == null) continue;
             Statement stm = null;
             try {
                 stm = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);

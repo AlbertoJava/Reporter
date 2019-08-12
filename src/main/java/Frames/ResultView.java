@@ -10,13 +10,14 @@ public class ResultView extends JScrollPane {
         //textArea.setEnabled(false);
         setViewportView(textArea);
         setBorder(BorderFactory.createTitledBorder("This is ScrollPanel"));
-        setPreferredSize(new Dimension(300,100));
+        setPreferredSize(new Dimension(300, 100));
     }
 
-    public void setText (String text){
+    public void setText(String text) {
         textArea.setText(text);
     }
-    public void append (String text){
+
+    public void append(String text) {
         textArea.append(text);
     }
 

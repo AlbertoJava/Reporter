@@ -22,14 +22,14 @@ public class AutoRegistration extends AbstractExcelReport {
     private String finishDate;
 
     public AutoRegistration(SqlProperties sqlprop, SqlExecutor sqlExecutor) {
-        super(sqlprop,sqlExecutor);
-        Calendar c =new GregorianCalendar();
-        currentDate=c.get(Calendar.DAY_OF_MONTH)+"_"+c.get(Calendar.MONTH)+"_"+c.get(Calendar.YEAR);
+        super(sqlprop, sqlExecutor);
+        Calendar c = new GregorianCalendar();
+        currentDate = c.get(Calendar.DAY_OF_MONTH) + "_" + c.get(Calendar.MONTH) + "_" + c.get(Calendar.YEAR);
     }
 
     @Override
     public boolean createReport(ResultSet result) {
-        boolean flag=false;
+        boolean flag = false;
         List<String> headerXLS = new ArrayList();
         headerXLS.add("Код ТО");
         headerXLS.add("ЭК10 ГОД Регистрация");
@@ -72,14 +72,14 @@ public class AutoRegistration extends AbstractExcelReport {
         headerXLS.add("ТУВ за неделю");
         headerXLS.add("Доля ТУВ за неделю, %");
 
-        HSSFWorkbook workbook =new HSSFWorkbook();
-        HSSFSheet worksheet =workbook.createSheet("0006-Р");
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFSheet worksheet = workbook.createSheet("0006-Р");
 
-        for (int i=0;i<31;i++){
-            worksheet.setColumnWidth(i,10*256);
+        for (int i = 0; i < 31; i++) {
+            worksheet.setColumnWidth(i, 10 * 256);
         }
 
-        Row preRow=worksheet.createRow(0);
+        Row preRow = worksheet.createRow(0);
         Cell cell_header = preRow.createCell(0, CellType.STRING);
         worksheet.addMergedRegion(new CellRangeAddress(
                 0,
@@ -87,26 +87,26 @@ public class AutoRegistration extends AbstractExcelReport {
                 0,
                 3
         ));
-        cell_header.setCellValue("Отчетный период: с " + startDate + " по " + finishDate+".");
-        Row row=worksheet.createRow(1);
-         /*Creating of header*/
+        cell_header.setCellValue("Отчетный период: с " + startDate + " по " + finishDate + ".");
+        Row row = worksheet.createRow(1);
+        /*Creating of header*/
         // Создаем стиль ячейки для заголовка таблицы
         HSSFCellStyle style = workbook.createCellStyle();
 
         style.setWrapText(true);
-        style.setAlignment        (HorizontalAlignment.CENTER);
+        style.setAlignment(HorizontalAlignment.CENTER);
         style.setVerticalAlignment(VerticalAlignment.CENTER);
         HSSFFont fontHeader = workbook.createFont();
         fontHeader.setFontName("Times New Roman");
-        fontHeader.setFontHeightInPoints((short)12);
-        fontHeader.setBold (true);
+        fontHeader.setFontHeightInPoints((short) 12);
+        fontHeader.setBold(true);
         style.setFont(fontHeader);
         style.setRotation((short) 90);
 
-        createHeader(headerXLS,worksheet,style,1);
-        insertData(result,worksheet,2);
-        flag=createFile(workbook);
-        return  flag;
+        createHeader(headerXLS, worksheet, style, 1);
+        insertData(result, worksheet, 2);
+        flag = createFile(workbook);
+        return flag;
     }
 
 

@@ -14,29 +14,30 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-public  class Printer {
-    private static ConcurrentMap<String, ResultTable> results=new ConcurrentHashMap();
+public class Printer {
+    private static ConcurrentMap<String, ResultTable> results = new ConcurrentHashMap();
 
-    public  static void printRowToMonitor(String text){
+    public static void printRowToMonitor(String text) {
         try {
-            String utfString = new String (text.getBytes("windows-1251"));
+            String utfString = new String(text.getBytes("windows-1251"));
             System.out.println(utfString);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
 
     }
-    public synchronized static  void printLineToMonitor(String text){
+
+    public synchronized static void printLineToMonitor(String text) {
         System.out.print(text);
     }
 
-    public synchronized static void saveResult(String description, StringBuilder result){
-        if (result==null || description==null) return;
-        results.put(description,new ResultTable(result, new GregorianCalendar()));
+    public synchronized static void saveResult(String description, StringBuilder result) {
+        if (result == null || description == null) return;
+        results.put(description, new ResultTable(result, new GregorianCalendar()));
         saveMaptoFile();
     }
 
-    private synchronized static boolean saveMaptoFile(){
+    private synchronized static boolean saveMaptoFile() {
         Calendar c = new GregorianCalendar();
         String sCurrentDate = c.get(Calendar.DATE) + "." + (c.get(Calendar.MONTH) + 1) + "." + c.get(Calendar.YEAR);
 
@@ -51,8 +52,8 @@ public  class Printer {
         }
         StringBuilder sb = new StringBuilder();
 
-        for (ConcurrentMap.Entry<String, ResultTable> pair:
-             results.entrySet()) {
+        for (ConcurrentMap.Entry<String, ResultTable> pair :
+                results.entrySet()) {
             sb.append("\n\r");
             sb.append("--------------------------------");
             sb.append(pair.getKey());
@@ -70,8 +71,8 @@ public  class Printer {
 
         try {
             Files.write(path,
-                        (sb.toString()).getBytes("windows-1251"),
-                         StandardOpenOption.WRITE);
+                    (sb.toString()).getBytes("windows-1251"),
+                    StandardOpenOption.WRITE);
         } catch (IOException e) {
             e.printStackTrace();
             return false;
@@ -81,11 +82,10 @@ public  class Printer {
 
     public static List<StringBuilder> getResults(String description) {
         List<StringBuilder> temp = new ArrayList<StringBuilder>();
-        if (results==null||results.get(description)==null) {
+        if (results == null || results.get(description) == null) {
             temp.add(new StringBuilder());
             temp.add(new StringBuilder());
-        }
-        else {
+        } else {
             temp.add(results.get(description).getResult());
             temp.add(results.get(description).getDateTime());
         }
@@ -97,13 +97,13 @@ public  class Printer {
         private StringBuilder dateTime;
 
         public ResultTable(StringBuilder result, Calendar c) {
-            this.result=result;
-            dateTime=toStringBulder(c);
+            this.result = result;
+            dateTime = toStringBulder(c);
         }
 
         private StringBuilder toStringBulder(Calendar c) {
 
-            StringBuilder result= new StringBuilder();
+            StringBuilder result = new StringBuilder();
             result.append(align(c.get(Calendar.HOUR)));
             result.append(':');
             result.append(align(c.get(Calendar.MINUTE)));
@@ -119,10 +119,10 @@ public  class Printer {
         }
 
         private StringBuilder align(int i) {
-            StringBuilder sb= new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             sb.append(i);
-            if (sb.length()==1){
-                sb.insert(0,'0');
+            if (sb.length() == 1) {
+                sb.insert(0, '0');
             }
             return sb;
         }

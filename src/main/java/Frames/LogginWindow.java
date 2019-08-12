@@ -20,28 +20,26 @@ public class LogginWindow extends JFrame {
     private JLabel textLabel = new JLabel("The period of use of the software has expired. Enter the new key.");
     private JLabel logginLabel = new JLabel(" Please, enter here new  key: ");
     private JTextField logginText = new JTextField(60);
-    private JButton logginButton   = new JButton("Enter key");
+    private JButton logginButton = new JButton("Enter key");
 
 
-
-
-    public  LogginWindow() throws HeadlessException {
-        super ("License window");
-        setSize(new Dimension(400,150));
+    public LogginWindow() throws HeadlessException {
+        super("License window");
+        setSize(new Dimension(400, 150));
         setLayout(new BorderLayout());
-        Container c= getContentPane();
-        c.add(textLabel,BorderLayout.NORTH);
+        Container c = getContentPane();
+        c.add(textLabel, BorderLayout.NORTH);
         textLabel.setHorizontalAlignment(0);
-        c.add(logginLabel,BorderLayout.WEST);
-        c.add(logginText,BorderLayout.CENTER);
-        c.add (logginButton,BorderLayout.SOUTH);
+        c.add(logginLabel, BorderLayout.WEST);
+        c.add(logginText, BorderLayout.CENTER);
+        c.add(logginButton, BorderLayout.SOUTH);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         logginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Button clicked!!!");
-                if (Controller.checkKey(logginText.getText())){
+                if (Controller.checkKey(logginText.getText())) {
                     saveKey(logginText.getText());
                     Controller.init();
                 }
@@ -53,14 +51,14 @@ public class LogginWindow extends JFrame {
 
     private void saveKey(String text) {
         String zipFilePath = BaseConstants.getInstance().getZipFileSQL();
-        FileHeader fHeader=null;
-        ZipFile zipFile =null;
+        FileHeader fHeader = null;
+        ZipFile zipFile = null;
         try {
-            zipFile=new ZipFile(zipFilePath);
-            if (zipFile.isEncrypted()){
+            zipFile = new ZipFile(zipFilePath);
+            if (zipFile.isEncrypted()) {
                 zipFile.setPassword(BaseConstants.getInstance().getZipPsw());
             }
-            fHeader =zipFile.getFileHeader("liesence.txt");
+            fHeader = zipFile.getFileHeader("liesence.txt");
             zipFile.removeFile(fHeader);
 
         } catch (ZipException e) {
